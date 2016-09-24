@@ -15,7 +15,13 @@ function newAdvert(Double $price, String $title, String $text, Array $images, In
 	
 }
 
+function calculateRemainingDuration(){
+	
+	
+}
+
 function deleteAdvert(DBSession $DBLink, $insertionDate, $deletionDate){
+	
 	
 	return $duration;
 	

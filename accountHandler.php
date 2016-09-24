@@ -48,17 +48,35 @@ function DeleteUser(DBSession $DBLink, String $EmailAddress){
 	
 }
 
-function AlterUser($DBLink, $EmailAddress, Array $userDataArray){
-	$query = "SELECT * from customers WHERE email = '" . $EmailAddress . "';";
-	$userData = mysqli_query($DBLink, $query);
-	$user = mysqli_fetch_assoc($userData);
-	
-	$diffArrays = array_diff($user, $userDataArray);
-	
-	echo $diffArrays;
+/*
+ * Take array from the user data after alteration is submitted
+ * compare it to the DB selection for the user
+ * update the fields that are different
+ * 
+ */
+
+function AlterUser($DBLink, $EmailAddress, Array $user){
 	
 	$userID = $user["id"];
 	$userFirstName = $user["firstName"];
+	$userLastName = $user["lastName"];
+	$password = HashPW($user["password"]);
+	$address = $user["address1"];
+	$houseNumber = $user["houseNumber"];
+	$zipCode = $user["zipCode"];
+	$city = $user["city"];
+	
+	$query = "UPDATE customers SET 'firstName' = " . $userFirstName . 
+									" 'lastName' = " . $userLastName . 
+									" 'password' = " . $password . 
+									" 'address1' = " . $address . 
+									" 'houseNumber' = " . $houseNumber . 
+									" 'zipCode' = " . $zipCode . 
+									" 'city' = " . $city . 
+									" WHERE emailAddress = '" . $EmailAddress . "';";
+	$alterResult = mysqli_query($DBLink, $query);
+	
+	return $alterResult;
 	
 	
 }
