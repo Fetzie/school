@@ -17,15 +17,15 @@ city VARCHAR (55),
 PRIMARY KEY (id)
 }
 
-CREATE table customerPayments
+CREATE table customerpaymentmethods
 {
 id int not null AUTO_INCREMENT,
 customerid int not null ,
 paymentMethod int,
-cardNumber int,
+cardNumber VARCHAR,
+cardName VARCHAR,
 expires VARCHAR,
-secNumber int,
-price double,
+secNumber VARCHAR,
 PRIMARY KEY (id)
 FOREIGN KEY customerid REFERENCES customers(id) ON UPDATE CASCADE ON DELETE RESTRICT
 FOREIGN KEY paymentmethod REFERENCES paymentOptions(id) ON UPDATE CASCADE ON DELETE RESTRICT 

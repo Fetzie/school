@@ -81,6 +81,44 @@ function AlterUser($DBLink, $EmailAddress, Array $user){
 	
 }
 
+function addPaymentMethodForUser($DBLink, $cardType, $name, $cardNumber, $cardSecurity, $cardExpiry, $userID){
+	$hashedName = sha1($name);
+	$hashedCardNumber = sha1($cardNumber);
+	$hashedSecurity = sha1($cardSecurity);
+	$hashedCardExpiry = sha1($cardExpiry);
+	
+	switch (paymentMethod){
+		
+		case "AMEX": $cardType = "0";
+		case "VISA": $cardType = "1";
+		case "MASTERCARD": $cardType = "2";
+		case "BANKEINZUG": $cardType = "3";
+	};
+	
+	$query = "INSERT INTO customerPayments (customerid, paymentmethod, cardnumber, expires, secNumber, cardname) VALUES '" 
+															. $userID . "', "
+															. $cardType . "', "		
+															. $hashedCardNumber . "', "
+															. $hashedCardExpiry . "', "
+															. $hashedSecurity . "', "
+															. $hashedName . "';";
+	$newUserPaymentOption = mysqli_query($DBLink, $query);
+	return $newUserPaymentOption;														
+}
+
+function deletePaymentMethod(){
+	
+	
+}
+
+function changePassword($DKLink, $password, $emailAddress){
+	$hashedPW = HashPW($password);
+	
+	$query = "UPDATE customers SET password = '" . $password . "' WHERE emailAddress = '" . $emailAddress . "';";
+	
+	$alterPassword = mysqli_query($DBLink, $query);
+}
+
 function HashPW(String $password){
 	
 	$hashValue = sha1($password);
