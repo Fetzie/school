@@ -40,8 +40,8 @@ PRIMARY KEY (id)
 
 CREATE table advertisement{
 id int,
-text VARCHAR (5000),
-picturepath VARCHAR (240),
+text VARCHAR(5000),
+picturepath VARCHAR(240),
 customerid int not null,
 createdate int not null,
 expiredate int not null,
