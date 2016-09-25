@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Kroker/Rottler" />
+  <title>Kleinanzeigen mit PHP und MySQL</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">Kleinanzeigen mit PHP und MySQL</h1>
+<h2 class="author">Kroker/Rottler</h2>
+<h3 class="date">07.06.2016</h3>
+</div>
+<div id="kleinanzeigen-im-internet-aufgeben" class="section level1">
+<h1>Kleinanzeigen im Internet aufgeben</h1>
+<div id="section" class="section level2">
+<h2></h2>
+<p>Anwender sollen browsergestützt Annoncen auf einer Web-Plattform einstellen können.</p>
+<p>Dazu sind mehrere PHP-Skripte zu erstellen, die MySQL-gestützt Daten speichern.</p>
+</div>
+<div id="use-case-1-account-erstellen" class="section level2">
+<h2>Use Case 1: Account erstellen</h2>
+<ul class="incremental">
+<li>Vor- und Nachname eingeben</li>
+<li>Email eingeben, die zur späteren Anmeldung benötigt wird.</li>
+<li><b>Kennwort</b> festlegen</li>
+<li>Straße, Hausnummer eingeben</li>
+<li>Wohnort auswählen</li>
+</ul>
+</div>
+<div id="use-case-2-anmelden-beim-system" class="section level2">
+<h2>Use Case 2: Anmelden beim System</h2>
+<p>In einer eigenständigen Maske müssen die Email-Addresse und das Kennwort eingegeben werden.</p>
+<p>Das System vergleicht die eingegebenen Daten mit den gespeicherten. Bei Übereinstimmung wird der Zugriff freigegeben.</p>
+<p>Die Benutzerdaten sind in einer MySQL-Datenbank abgelegt.</p>
+</div>
+<div id="use-case-3-annonce-erstellen" class="section level2">
+<h2>Use Case 3: Annonce erstellen</h2>
+<p>Der <b>angemeldete</b> Benutzer wählt zunächst aus einer Liste die Rubrik aus, in der seine Annonce geführt werden soll. Die ausgewählte Rubrik soll als String in den Daten der Annonce weiter geführt werden.</p>
+<p>Anschließend gibt er den Text der Annonce ein und kann, bei Bedarf, mehrere Bilder hochladen, die in die Annonce eingebunden werden.</p>
+</div>
+<div id="use-case-4-account-löschen" class="section level2">
+<h2>Use Case 4: Account löschen</h2>
+<p>Ein angemeldeter Benutzer löscht seinen Account. Alle Annoncen, die ihm in diesem Moment zugeordnet sind, werden zusammen mit den Bilder gelöscht.</p>
+</div>
+<div id="use-case-5-annoncen-ändern-oder-löschen" class="section level2">
+<h2>Use Case 5: Annoncen ändern oder löschen</h2>
+<p>Ein angemeldeter Benutzer bearbeitet oder löscht eine seiner Annoncen. Er kann die Rubrik oder den Text editieren sowie ein (weiteres) Bild hinzufügen oder löschen. Wird eine Annonce gelöscht, so werden auch alle ihr zugeordneten Bildverweise (und ggf. die Bilddateien) gelöscht.</p>
+</div>
+<div id="use-case-6-annoncen-durchsuchen" class="section level2">
+<h2>Use Case 6: Annoncen durchsuchen</h2>
+<p>Ein Interessent lässt sich alle ihn interessierenden Annoncen anzeigen. Die Ausgabe soll in übersichtlicher Form erfolgen. Die aufzulistenden Annoncen können z.B. anhand der Rubrik gefiltert werden. Durch Anklicken soll die komplette Annonce sichtbar werden.</p>
+</div>
+</div>
+<div id="aktivitäten" class="section level1">
+<h1>Aktivitäten</h1>
+<p>(Aktivitätsdiagramme)</p>
+<div id="use-case-2-benutzeranmeldung" class="section level2">
+<h2>USE CASE 2: Benutzeranmeldung</h2>
+<div style="text-align:left;">
+<p>Ablaufbeschreibung</p>
+<ol style="text-align:left;">
+<li style="text-align:left;">
+<span>1) Eingabeformular an Client senden </span>
+</li>
+<li data-fragment-index="1" class="fragment" style="text-align:left;">
+<span>2) Benutzer gibt Anmeldedaten ein und schickt sie zurück. </span>
+</li>
+<li data-fragment-index="2" class="fragment">
+<span>3) Im PHP-Skript werden die Formulardaten ausgewertet.</span>
+</li>
+<li data-fragment-index="3" class="fragment">
+<span>4) Verbindung zur Datenbank aufbauen </span>
+</li>
+<li data-fragment-index="4" class="fragment">
+<span>5) SELECT-Statement an Datenbank schicken. </span>
+</li>
+<li data-fragment-index="5" class="fragment">
+<span>6) Rückgabedaten auswerten </span>
+</li>
+<li data-fragment-index="6" class="fragment">
+<span> 7) Benutzerinformation erstellen und an Client senden. </span>
+</li>
+</ol>
+</div>
+</div>
+<div id="use-case-3-annonce-erstellen-1" class="section level2">
+<h2>Use Case 3: Annonce erstellen</h2>
+<div style="text-align:left;">
+<p>Ablaufbeschreibung nachdem sich der Benutzer angemeldet hat und eine Session aktiv ist.</p>
+<ol style="text-align:left;">
+<li style="text-align:left;">
+<span>1) Rubrik der Annonce aus einem Pull-Down-Menü auswählen </span>
+</li>
+<li data-fragment-index="1" class="fragment" style="text-align:left;">
+<span>2) Text der Annonce eingeben. </span>
+</li>
+<li data-fragment-index="2" class="fragment" style="text-align:left;">
+<span>3) Bilder hochladen. </span>
+</li>
+<li data-fragment-index="3" class="fragment" style="text-align:left;">
+<span>4) Kontaktdaten und Preisvorstellung eingeben. </span>
+</li>
+<li data-fragment-index="4" class="fragment" style="text-align:left;">
+<span>5) Annonce als HTML-Seite aufbauen, dem Benutzer zeigen und auf Freigabe warten. </span>
+</li>
+</ol>
+</div>
+<div id="anmeldeformular" class="section level2">
+<h2>Anmeldeformular</h2>
+<div class="figure">
+<img src="images/LoginForm.jpg" alt="Login-Formular" height="300" />
+<p class="caption">Login-Formular</p>
+</div>
+<p>Bei erfolgreicher Anmeldung erscheint ...</p>
+</div>
+<div id="section-1" class="section level2">
+<h2></h2>
+<p>die Startseite der Anzeigenverwaltung</p>
+<div class="figure">
+<img src="images/Home.jpg" height="150" />
+
+</div>
+<p>Bei falscher Eingabe (wird der Benutzer geschüttelt)</p>
+</div>
+</div>
+<div id="datenbank-anbindung" class="section level1">
+<h1>Datenbank-Anbindung</h1>
+<div id="section-2" class="section level2">
+<h2></h2>
+<p>http://php.net/manual/de/mysqli.construct.php</p>
+<p>mysqli_connect — Öffnet eine Verbindung zu einem MySQL-Server</p>
+</div>
+<div id="beispiel-1" class="section level2">
+<h2>Beispiel 1</h2>
+<pre><code>&lt;?php
+  $link = mysqli_connect(&#39;localhost&#39;, &#39;mysql_user&#39;, &#39;mysql_password&#39;, &#39;dbname&#39;);
+  if (!$link) {
+    die(&#39;Verbindung schlug fehl: (&#39; . mysqli_connect_errno() . &#39;) &#39; . mysqli_connect_error());
+  }
+  echo &#39;Erfolgreich verbunden&#39; . mysqli_get_host_info($link) . &quot;\n&quot;;
+  mysqli_close($link);
+?&gt;</code></pre>
+</div>
+<div id="beispiel-2" class="section level2">
+<h2>Beispiel 2</h2>
+<p>Verbindung zu localhost auf port 3307</p>
+<pre><code>&lt;?php
+  $link = mysqli_connect(&#39;127.0.0.1:3307&#39;, &#39;mysql_user&#39;, &#39;mysql_password&#39;, &#39;dbname&#39;);
+  if (!$link) {
+    die(&#39;Verbindung schlug fehl: (&#39; . mysqli_connect_errno() . &#39;) &#39; . mysqli_connect_error());
+  }
+  echo &#39;Erfolgreich verbunden&#39; . mysqli_get_host_info($link) . &quot;\n&quot;;
+  mysqli_close($link);
+?&gt;</code></pre>
+</div>
+<div id="hinweis" class="section level2">
+<h2>Hinweis</h2>
+<p>Immer wenn sie &quot;localhost&quot; oder &quot;localhost:port&quot; als Server angeben, wird die MySQL Client Bibliothek dies überschreiben und versuchen, sich zu einem lokalen Socket (named pipe unter Windows) zu verbinden. Wenn sie TCP/IP nutzen möchten, nutzen sie &quot;127.0.0.1&quot; anstatt &quot;localhost&quot;. Wenn die MySQL Client Bibliothek versucht, sich zu dem falschen lokalen Socket zu verbunden, sollten sie den korrekten Pfad in ihrer PHP-Konfiguration setzen und das Server-Feld leer lassen.</p>
+</div>
+<div id="datenbankzugriff" class="section level2">
+<h2>Datenbankzugriff</h2>
+<p>Beispiel: Zugriff auf die Benutzertabelle</p>
+<pre style="background-color:#ffffcc;">
+$sql = "SELECT IdBenutzer, Vorname, Nachname FROM Benutzer WHERE ....";
+$result = mysqli_query($link, $sql);
+</pre>
+<p>Es kann höchstens 1 Datensatz zurückkommen!</p>
+<pre style="background-color:#ffffcc;">
+if (mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_assoc($result)); // output data of 1 row
+    echo "Nachname: " . $row["Nachname"]. " Vorname: " . $row["Vorname"];
+    } else {
+    echo "Benutzerangaben leider falsch";
+</pre>
+<p>Weiteres Beispiel unter w3schools</p>
+<p>http://www.w3schools.com/php/php_mysql_select.asp</p>
+</div>
+</div>
+<div id="datenbank-vorgaben" class="section level1">
+<h1>Datenbank-Vorgaben</h1>
+<div id="section-3" class="section level2">
+<h2></h2>
+<ul class="incremental">
+<li>Serverbasierte Datenbank (MySQL)</li>
+<li>Anbindung an PHP-Skripte</li>
+</ul>
+</div>
+<div id="entitäten" class="section level2">
+<h2>Entitäten</h2>
+<p style="text-align:left;">
+Das ER-Modell muss enthalten
+</p>
+<ul>
+<li>
+<b>Benutzer</b> mit Vor- und Nachname, Straße/Nr., Email-Addresse, Kennwort etc. Die Email-Addresse <b>muss</b> eindeutig sein.
+</li>
+<li data-fragment-index="1" class="fragment">
+<b>Orte</b> mit Postleitzahlen und Ortsnamen
+</li>
+<li data-fragment-index="2" class="fragment">
+<b>Annoncen</b> mit Rubrik (String) und Annoncen-Text
+</li>
+<li data-fragment-index="3" class="fragment">
+<b>Bilder</b> mit den Dateinamen der Bilder. Die Bilddateien selbst werden in einem Image-Verzeichnis gespeichert.
+</li>
+<li data-fragment-index="4" class="fragment">
+<b>Bezeichnungen</b> mit einer Vorauswahl für Rubriken und (bei mehrsprachigem Seitenlayout) den Bezeichnungen der Formularelemente. Die Rubrik soll aus der Vorauswahl übernommen oder neu erstellt werden können.
+</li>
+</ul>
+</div>
+<div id="relations" class="section level2">
+<h2>Relations</h2>
+<ul class="incremental">
+<li>Ein Benutzer kann mehrere Annoncen im Portal einstellen.</li>
+<li>Eine Annonce muss einem Benutzer zugeordnet sein.</li>
+<li>Ein Benutzer hat genau einen Wohnsitz.</li>
+<li>Einer Annonce können mehrere Bilder zugeordnet werden.</li>
+<li>Ein bestimmtes Bild wird nur einer Annonce zugeordnet.</li>
+<li>Löscht ein Benutzer seinen Account, so sollen auch alle im zugeordneten Annoncen gelöscht werden.</li>
+<li>Wird eine Annonce gelöscht, so sollen auch alle Bildverweise (und die Bilder) gelöscht werden.</li>
+</ul>
+</div>
+<div id="section-4" class="section level2">
+<h2></h2>
+<div class="figure">
+<img src="images/ERModellKleinanzeigen.svg" alt="ER-Modell" height="500" />
+<p class="caption">ER-Modell</p>
+</div>
+</div>
+</div>
+<div id="projektumfang-und--anforderungen" class="section level1">
+<h1><span style="font-size:0.85em">Projektumfang und -anforderungen</span></h1>
+<div id="html5" class="section level2">
+<h2>HTML5</h2>
+<ul class="incremental">
+<li>Formulare erstellen</li>
+<li>HTML-Seiten mit PHP-Unterstützung automatisiert erstellen</li>
+<li>Seitenlayout und Gestaltung mit CSS</li>
+<li>Validierung mit W3C Validator https://validator.w3.org/</li>
+</ul>
+</div>
+<div id="php" class="section level2">
+<h2>PHP</h2>
+<ul class="incremental">
+<li>mySQLi- Anbindung an eine MySQL-Datenbank</li>
+<li>Mindestens ein Auswahlmenü muss mit Daten aus der Tabelle <i>Bezeichnungen</i> gefüllt werden (z.B. Auswahl der Rubrik)</li>
+<li>Session/Cookie-Verwaltung</li>
+<li>Dateien auf Server speichern</li>
+<li>Formulardaten mit Regex prüfen</li>
+</ul>
+</div>
+<div id="datenbank" class="section level2">
+<h2>Datenbank</h2>
+<ul class="incremental">
+<li>CREATE TABLE - weitere Anweisungen wie CASCADE ON DELETE und Indizierung von Tabellen</li>
+<li>Daten in verknüpfte Tabellen einstellen</li>
+</ul>
+</div>
+<div id="bewertungskriterien" class="section level2">
+<h2>Bewertungskriterien</h2>
+<p>Liste kommt noch.</p>
+</div>
+</div>
+</body>
+</html>
