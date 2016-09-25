@@ -1,5 +1,5 @@
 <?php
-include 'dbHandler.php';
+include '../handler/dbHandler.php';
 
 echo date("Y-M-d G:i:s", time()) . " : [processSelect] page loaded, php works" . "</br>" . PHP_EOL;
 
