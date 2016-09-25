@@ -6,26 +6,27 @@ USING database 'phpClass';
 
 CREATE table customers
 {
-id int not null auto_increment,
+id int not null AUTO_INCREMENT,
 firstName VARCHAR(55) not null,
-lastName VARCHAR (55),
-emailAddress VARCHAR (55),
-address1 VARCHAR (55),
-houseNumber VARCHAR (55),
-zipcode VARCHAR (55),
-city VARCHAR (55),
+lastName VARCHAR (55) not null,
+emailAddress VARCHAR (55) not null,
+address1 VARCHAR (55) not null,
+houseNumber VARCHAR (55) not null,
+zipcode VARCHAR (55) not null,
+city VARCHAR (55) not null,
 PRIMARY KEY (id)
 }
 
 CREATE table customerpaymentmethods
 {
-id int not null AUTO_INCREMENT,
-customerid int not null ,
-paymentMethod int,
-cardNumber VARCHAR,
-cardName VARCHAR,
-expires VARCHAR,
-secNumber VARCHAR,
+id int(20) not null AUTO_INCREMENT,
+customerid int(20) not null ,
+paymentMethod int(20) not null,
+cardNumber VARCHAR(60) not null,
+cardName VARCHAR(60) not null,
+expires VARCHAR(60) not null,
+secNumber VARCHAR(60),
+billingAddress VARCHAR(500) not null,
 PRIMARY KEY (id)
 FOREIGN KEY customerid REFERENCES customers(id) ON UPDATE CASCADE ON DELETE RESTRICT
 FOREIGN KEY paymentmethod REFERENCES paymentOptions(id) ON UPDATE CASCADE ON DELETE RESTRICT 
