@@ -87,12 +87,12 @@ function addPaymentMethodForUser($DBLink, $cardType, $name, $cardNumber, $cardSe
 	$hashedSecurity = sha1($cardSecurity);
 	$hashedCardExpiry = sha1($cardExpiry);
 	
-	switch (paymentMethod){
+	switch (cardType){
 		
-		case "AMEX": $cardType = "0";
+		case "BANKEINZUG": $cardType = "0";
 		case "VISA": $cardType = "1";
 		case "MASTERCARD": $cardType = "2";
-		case "BANKEINZUG": $cardType = "3";
+		case "ONLINE-UEBERWEISUNG": $cardType = "3";
 	};
 	
 	$query = "INSERT INTO customerPayments (customerid, paymentmethod, cardnumber, expires, secNumber, cardname) VALUES '" 
