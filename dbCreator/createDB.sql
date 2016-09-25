@@ -81,6 +81,3 @@ FOREIGN KEY (paymentoption) REFERENCES paymentoption(id) ON UPDATE CASCADE ON DE
 FOREIGN KEY (advertisementid) REFERENCES advertisement(id) ON UPDATE CASCADE ON DELETE RESTRICT
 FOREIGN KEY (paymentmethodid) REFERENCES customerpaymentmethods(id) ON UPDATE CASCADE ON DELETE RESTRICT
 };
-FOREIGN KEY (advertisementid) REFERENCES advertisement(id) ON UPDATE CASCADE ON DELETE RESTRICT
-FOREIGN KEY (paymentmethodid) REFERENCES customerpaymentmethods(id) ON UPDATE CASCADE ON DELETE RESTRICT
-};
