@@ -111,8 +111,8 @@ function deletePaymentMethod(){
 	
 }
 
-function changePassword($DKLink, $password, $emailAddress){
-	$hashedPW = HashPW($password);
+function changePassword($DBLink, $password, $emailAddress){
+	#$hashedPW = HashPW($password);
 	
 	$query = "UPDATE customers SET password = '" . $password . "' WHERE emailAddress = '" . $emailAddress . "';";
 	
@@ -124,4 +124,33 @@ function HashPW(String $password){
 	$hashValue = sha1($password);
 	return $HashValue;
 	
+}
+
+function LogoutUser($session){
+	
+	$loggedOut = session_destroy($session);
+	return $loggedOut;
+	
+}
+
+function loginUser(){
+	$session = session_start();
+	
+}
+function AuthenticateUser($login, $password, $DBLink){
+	$loggedIn = false;
+	$password = HashPW($password);
+	$query = "SELECT password from account where username = " . "\'" . $login . "\';";
+	$returnedPw = mysqli_query($DBlink, $query);
+	
+	if ($password == $returnedPw) {
+		$loggedIn = true;
+		$sessionId = session_id();
+		
+		return 
+	}else {
+		$loggedIn = false;
+	}
+	
+	return $loggedIn;
 }
