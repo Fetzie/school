@@ -12,9 +12,9 @@ function addDays($ID)
 
         while($row = mysqli_fetch_assoc($result)) 
         {
-               $ID
-               $row"]
-               $row["priceFromSeller"]
+               $ID = $row["annoncenID"];
+               $timeToDeath = $row["timetoDeath"];
+               #$row["priceFromSeller"]        
         }
 
         mysqli_close($conn);   
