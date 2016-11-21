@@ -1,4 +1,4 @@
 <?php
 include 'dbCreate.php';
 
-sqlImport("createDB.sql");
+sqlImport("phpclass.sql");

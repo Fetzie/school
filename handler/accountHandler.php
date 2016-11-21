@@ -40,10 +40,11 @@ function AddUser(DBSession $DBLink, String $firstName, String $LastName, String 
  * @param String $EmailAddress
  * @return unknown
  */
-function DeleteUser(DBSession $DBLink, String $EmailAddress){
-	
-	$Query = "DELETE FROM customers where email = '".$EmailAddress."';";
+function DeleteUser(DBSession $DBLink, String $userid, $session){
+	LogoutUser($session);
+	$Query = "DELETE FROM customers where email = '".$userid."';";
 	$ResultDeleteUser = mysqli_query($DBLink, $Query);
+	
 	return $ResultDeleteUser;
 	
 }
@@ -55,7 +56,7 @@ function DeleteUser(DBSession $DBLink, String $EmailAddress){
  * 
  */
 
-function AlterUser($DBLink, $EmailAddress, Array $user){
+function AlterUser($DBLink, Array $user){
 	
 	$userID = $user["id"];
 	$userFirstName = $user["firstName"];
@@ -65,6 +66,7 @@ function AlterUser($DBLink, $EmailAddress, Array $user){
 	$houseNumber = $user["houseNumber"];
 	$zipCode = $user["zipCode"];
 	$city = $user["city"];
+	$emailaddress = $user["email"];
 	
 	$query = "UPDATE customers SET 'firstName' = " . $userFirstName . 
 									" 'lastName' = " . $userLastName . 
@@ -73,7 +75,8 @@ function AlterUser($DBLink, $EmailAddress, Array $user){
 									" 'houseNumber' = " . $houseNumber . 
 									" 'zipCode' = " . $zipCode . 
 									" 'city' = " . $city . 
-									" WHERE emailAddress = '" . $EmailAddress . "';";
+									" 'email' = " . $EmailAddress .
+									" WHERE id = '" . $userID . "';";
 	$alterResult = mysqli_query($DBLink, $query);
 	
 	return $alterResult;
@@ -133,10 +136,12 @@ function LogoutUser($session){
 	
 }
 
-function loginUser(){
-	$session = session_start();
-	
+function LoginUser($sessionId){
+	$session = session_start($sessionId);
+	return $session;
 }
+
+
 function AuthenticateUser($login, $password, $DBLink){
 	$loggedIn = false;
 	$password = HashPW($password);
@@ -146,11 +151,11 @@ function AuthenticateUser($login, $password, $DBLink){
 	if ($password == $returnedPw) {
 		$loggedIn = true;
 		$sessionId = session_id();
+		$session = LoginUser($sessionId);
 		
-		return 
 	}else {
 		$loggedIn = false;
 	}
 	
-	return $loggedIn;
+	return $session;
 }

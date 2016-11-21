@@ -28,6 +28,6 @@ function writeDB($fileName, $host, $user, $password){
 		mysqli_query($DBLink, $query);
 }
 
-writeDB("createDB.sql", "127.0.0.1", "root", "");
+writeDB("phpclass.sql", "127.0.0.1", "root", "");
 
 ?>
