@@ -1,0 +1,21 @@
+Noch zu erarbeiten:
+
+- annoncen_bearbeitung -
+	Verlängerung des timeToDeath
+	Bilder Bearbeitung
+	Löschen aus der Datenbank inklusive Bilder
+
+- annoncen_erstellen -
+	Mehrere File Input Felder durch JavaScript
+	Mehrere Bilder hochladen
+
+- index -
+	Bei keiner Annonce in Datenbank Fehlermeldung vermeiden
+
+- add_days -
+	Fertig schreiben, + 30 Tage bei Timetodeath und konstantes erhöhen des Preises
+
+
+
+Fragen:
+Annonce soll auf HTML Seite dagestellt werden und auf Freigabe warten. Wie ist die Freigabe gemeint?
