@@ -25,9 +25,9 @@
             
             list ($price, $timeToDeath) = priceCalc($days, $priceFromSeller);
             		                                 
-            $sql = "INSERT INTO annoncen (birthdate, rubrik, titel, text, priceFromSeller, days, price, timeToDeath)
-                    VALUES (NOW(), '$rubrik', '$titel', '$text', '$priceFromSeller', '$days', '$price', '$timeToDeath')";
-
+            $sql = "INSERT INTO advertisement (createdate, categoryid, title, text, priceFromSeller, days, price, timeToDeath)
+                    VALUES (NOW(), '$rubrik', 'SELECT id from category where name = '$titel'';', '$text', '$priceFromSeller', '$days', '$price', '$timeToDeath')";
+		
             if (mysqli_query($conn, $sql)) 
             {
                 echo "Neuen Eintrag erfolgreich gespeichert";
@@ -83,7 +83,9 @@
     
     function pix()
     {      
-        
+        if (!is_dir("Pictures/")){
+        	mkdir("Pictures/");
+        }
         $target_dir = "Pictures/";
         $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;

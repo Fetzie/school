@@ -1,7 +1,7 @@
 <?php
-include '../handler/accountHandler.php';
-include '../handler/advertHandler.php';
-include '../handler/dbHandler.php';
+include '../../handler/accountHandler.php';
+include '../../handler/advertHandler.php';
+include '../../handler/dbHandler.php';
 
 
 function billingAddress($customerid){

@@ -26,9 +26,13 @@ function ImportConnectionTest(){
  * @param unknown $port
  * @return unknown
  */
-function DBLogin($host, $user, $password, $database, $port){
+function DBLogin(){
 	
-	
+	$host="localhost";
+	$user="root";
+	$password="";
+	$port=3306;
+	$database="phpclass";
 	$dbLink = mysqli_connect($host,$user,$password,$database,$port);
 	
 	// return error if unsuccessful

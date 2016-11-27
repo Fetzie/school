@@ -25,6 +25,27 @@ USE `phpclass`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pictures`
+--
+
+CREATE TABLE pictures (
+    pictureID INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    annoncenID INT(6) NOT NULL,
+    picturename VARCHAR(30) NOT NULL,
+    filename VARCHAR(30) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+    
+    
+    CREATE TABLE account (
+    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    customerid INT(6) NOT NULL,
+    password VARCHAR(55) NOT NULL,
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `advertisement`
 --
 
@@ -35,10 +56,15 @@ CREATE TABLE `advertisement` (
   `picturepath` varchar(240) DEFAULT NULL,
   `customerid` int(11) NOT NULL,
   `createdate` int(11) NOT NULL,
-  `expiredate` int(11) NOT NULL,
+  `date` TIMESTAMP NOT NULL,
   `duration` int(11) NOT NULL,
   `transactionid` int(11) NOT NULL,
-  `categoryid` int(11) NOT NULL
+  `categoryid` int(11) NOT NULL,
+  `price` float,
+  `days` int(12),
+  `visitors` INT(12) NOT NULL DEFAULT 0,
+  `display` boolean NOT NULL,
+  `picturebox` VARCHAR(30)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -77,7 +103,7 @@ CREATE TABLE `advertisement2category` (
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `parentid` int(11) NOT NULL
+  `parentid` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -260,15 +286,15 @@ ALTER TABLE `transactions`
 -- Constraints for table `advertisement`
 --
 ALTER TABLE `advertisement`
-  ADD CONSTRAINT `advertisement_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customers` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `advertisement_ibfk_2` FOREIGN KEY (`transactionid`) REFERENCES `transactions` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `advertisement_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+  ADD CONSTRAINT `advertisement_ibfk_2` FOREIGN KEY (`transactionid`) REFERENCES `transactions` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 --
 -- Constraints for table `advertisement2category`
 --
 ALTER TABLE `advertisement2category`
-  ADD CONSTRAINT `advertisement2category_ibfk_1` FOREIGN KEY (`categoryid`) REFERENCES `category` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `advertisement2category_ibfk_2` FOREIGN KEY (`advertisementid`) REFERENCES `advertisement` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `advertisement2category_ibfk_1` FOREIGN KEY (`categoryid`) REFERENCES `category` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+  ADD CONSTRAINT `advertisement2category_ibfk_2` FOREIGN KEY (`advertisementid`) REFERENCES `advertisement` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 --
 -- Constraints for table `customerpaymentmethods`

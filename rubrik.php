@@ -23,7 +23,7 @@
             {
                 $rubrik = $_POST["rubrik"];
 		                                 
-                $sql = "INSERT INTO rubrik (rubrik)
+                $sql = "INSERT INTO category (name)
                             VALUES ('$rubrik')";
 
                 if (mysqli_query($conn, $sql)) 
@@ -42,7 +42,7 @@
             $rubrik = $_POST["rubrik"];
             $rubrikID = $_POST["rubrikID"];
                    
-            $sql = "UPDATE rubrik SET rubrik='$rubrik' WHERE rubrikID=$rubrikID";
+            $sql = "UPDATE category SET name='$rubrik' WHERE id=$rubrikID";
               
             if (mysqli_query($conn, $sql)) 
             {
@@ -57,7 +57,7 @@
         {
             $rubrikID = $_POST["rubrikID"];
  
-            $sql = "DELETE FROM rubrik WHERE rubrikID=$rubrikID";
+            $sql = "DELETE FROM category WHERE id=$rubrikID";
 
             if (mysqli_query($conn, $sql))
             {
@@ -83,14 +83,14 @@
     {
         include ("dbMaster.php");
 
-        $sql = "SELECT rubrikID, rubrik FROM rubrik";
+        $sql = "SELECT id, name FROM category";
         $result = mysqli_query($conn, $sql);
 
         while($row = mysqli_fetch_assoc($result)) 
         {
             echo "<form name='geaenderterEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "'>"
-               . "<input type='hidden' name='rubrikID' value='" . $row["rubrikID"] . "'>"
-               . "<input type='text' name='rubrik' value='" . $row["rubrik"] . "'>"
+               . "<input type='hidden' name='rubrikID' value='" . $row["id"] . "'>"
+               . "<input type='text' name='rubrik' value='" . $row["name"] . "'>"
                . "<input type='submit' name='speichern' value='speichern'><input type='submit' name='entfernen' value='l&ouml;schen'><br>"
                . "</form>";
         }

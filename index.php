@@ -1,4 +1,7 @@
 <?php
+
+include './handler/dbHandler.php';
+include './handler/accountHandler.php';
     if (! session_id()) session_start(); 
     
     $_SESSION['benutzername'] = "";
@@ -8,22 +11,21 @@
     {
         if ( $_POST['benutzername'] != "" && $_POST['kennwort'] != ""  )
         {
-            if ( 
-                 $_POST['benutzername'] == "admin" 
-                 AND 
-                 $_POST['kennwort'] == "admin"
-               )
-            {
-                $_SESSION['benutzername'] = $_POST['benutzername'];
-                $_SESSION['eingeloggt'] = true;
-                header('Location: ./annoncen_erstellen.php');
-            }
-            else
-            {
+        	$login=$_POST['benutzername'];
+        	$password=$_POST['kennwort'];
+        	$DBLink=DBLogin();
+        	$userStatus=AuthenticateUser($login, $DBLink);
+ 			while ($row = mysqli_fetch_assoc($userStatus)){
+        		if (HashPW($password) == $row['password']){
+        			$_SESSION['benutzername'] = $_POST['benutzername'];
+        			$_SESSION['eingeloggt'] = true;
+        			echo "<b>einloggen erfolgreich</b>";
+        		} else {
                 echo "<b>ung&uuml;ltige Eingabe</b>";
                 $_SESSION['eingeloggt'] = false;
-            }
-        }
+            	}
+        	}
+    	}
     }
     
     $titel = "SellMyCar";

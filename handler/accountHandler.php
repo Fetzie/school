@@ -22,14 +22,21 @@
  * @param String $EmailAddress
  * @return Returns success of user insert
  */
-function AddUser(DBSession $DBLink, String $firstName, String $LastName, String $Password, String $Address1, int $HouseNumber, String $City, String $ZipCode, String $EmailAddress){
-	$HashedPW = HashPW($password);
-	$query = "INSERT INTO customers 
-			(firstname, lastname, email, password, address1, housenumber, city, zipcode) VALUES 
-			('".$firstName."', '".$LastName."', ".$HashedPW."', '".$Address1."', '".$HouseNumber."', '"
-					.$City."', '".$ZipCode."', '".$EmailAddress."');";
+function AddUser($DBLink, $firstName, $LastName, $Password, $Address1, $HouseNumber, $City, $ZipCode, $EmailAddress){
+	$HashedPW = HashPW($Password);
 	
+	$query = "INSERT INTO customers 
+			(firstname, lastname, emailaddress, address1, housenumber, city, zipcode, password) VALUES 
+			('".$firstName."', '".$LastName."', '".$EmailAddress."', '".$Address1."', '".$HouseNumber."', '"
+					.$City."', '".$ZipCode."', '".$HashedPW."');";
 	$ResultAddUser = mysqli_query($DBLink, $query);
+		if (!$ResultAddUser){
+			echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AddUser] insert failed " . "</br>" . PHP_EOL;
+			echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AddUser] Debugging Err.No: " . mysqli_errno($DBLink) . "</br>" . PHP_EOL;
+			echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AddUser] Debugging Error: " . mysqli_error($DBLink) . "</br>" . PHP_EOL;
+			exit;
+		}
+		echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AddUser] successfully added user " . $firstName . $LastName . "</br>" . PHP_EOL;;
 	
 	return $ResultAddUser;
 }
@@ -40,10 +47,10 @@ function AddUser(DBSession $DBLink, String $firstName, String $LastName, String 
  * @param String $EmailAddress
  * @return unknown
  */
-function DeleteUser(DBSession $DBLink, String $userid, $session){
+function DeleteUser($DBLink, $userEmailAddress, $session){
 	LogoutUser($session);
-	$Query = "DELETE FROM customers where email = '".$userid."';";
-	$ResultDeleteUser = mysqli_query($DBLink, $Query);
+	$query = "DELETE FROM customers where email = '".$userEmailAddress."';";
+	$ResultDeleteUser = mysqli_query($DBLink, $query);
 	
 	return $ResultDeleteUser;
 	
@@ -56,7 +63,10 @@ function DeleteUser(DBSession $DBLink, String $userid, $session){
  * 
  */
 
-function AlterUser($DBLink, Array $user){
+function AlterUser($DBLink, $user){
+	
+	
+	
 	
 	$userID = $user["id"];
 	$userFirstName = $user["firstName"];
@@ -66,7 +76,7 @@ function AlterUser($DBLink, Array $user){
 	$houseNumber = $user["houseNumber"];
 	$zipCode = $user["zipCode"];
 	$city = $user["city"];
-	$emailaddress = $user["email"];
+	$emailaddress = $user["emailaddress"];
 	
 	$query = "UPDATE customers SET 'firstName' = " . $userFirstName . 
 									" 'lastName' = " . $userLastName . 
@@ -122,10 +132,11 @@ function changePassword($DBLink, $password, $emailAddress){
 	$alterPassword = mysqli_query($DBLink, $query);
 }
 
-function HashPW(String $password){
+function HashPW($password){
 	
 	$hashValue = sha1($password);
-	return $HashValue;
+	
+	return $hashValue;
 	
 }
 
@@ -142,20 +153,16 @@ function LoginUser($sessionId){
 }
 
 
-function AuthenticateUser($login, $password, $DBLink){
-	$loggedIn = false;
-	$password = HashPW($password);
-	$query = "SELECT password from account where username = " . "\'" . $login . "\';";
-	$returnedPw = mysqli_query($DBlink, $query);
-	
-	if ($password == $returnedPw) {
-		$loggedIn = true;
-		$sessionId = session_id();
-		$session = LoginUser($sessionId);
-		
-	}else {
-		$loggedIn = false;
+function AuthenticateUser($login, $DBLink){
+	$query = "SELECT password from customers where emailaddress = " . "'" . $login . "';";
+	echo $query . PHP_EOL;
+	$returnedPw = mysqli_query($DBLink, $query);
+	if (!$returnedPw){
+		echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AuthenticateUser] Getting AuthData failed " . "</br>" . PHP_EOL;
+		echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AuthenticateUser] Debugging Err.No: " . mysqli_errno($DBLink) . "</br>" . PHP_EOL;
+		echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AuthenticateUser] Debugging Error: " . mysqli_error($DBLink) . "</br>" . PHP_EOL;
+		exit;
 	}
-	
-	return $session;
+	echo date("Y-M-d G:i:s", time()) . " : [accountHandler.AuthenticateUser] Retrieving AuthData successful" . "</br>" . PHP_EOL;
+	return $returnedPw;
 }

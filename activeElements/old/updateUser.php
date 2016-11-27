@@ -1,6 +1,6 @@
 <?php
-include '../handler/accountHandler.php';
-include '../handler/dbHandler.php';
+include '../../handler/accountHandler.php';
+include '../../handler/dbHandler.php';
 
 $DBLink = DBLogin("localhost", "root", "", "phpClass", "3306");
 
