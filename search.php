@@ -1,8 +1,7 @@
 <?php
-function search($rubrik, $rangeA, $rangeB)
+function search($DBLink, $rubrik, $rangeA, $rangeB)
 {
-    include './handler/dbHandler.php';
-    
+
     if($rubrik == 'Alle')
     {
         $sql = "SELECT a.id, c.name, a.title, a.priceFromSeller, a.display FROM advertisement a LEFT JOIN category c ON a.categoryid = c.id WHERE a.display='1' AND a.priceFromSeller BETWEEN $rangeA AND $rangeB";

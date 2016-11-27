@@ -55,7 +55,7 @@ if(isset($_POST["search"]))
     $rubrik = $_POST["rubrik"];
     $rangeA = $_POST["rangeA"]*500;
     $rangeB = $_POST["rangeB"]*500+$rangeA;
-    search($rubrik, $rangeA, $rangeB);
+    search($DBLink, $rubrik, $rangeA, $rangeB);
 }
 else
 {
