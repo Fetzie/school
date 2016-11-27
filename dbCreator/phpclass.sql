@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2016 at 12:27 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.23
+-- Generation Time: Nov 27, 2016 at 05:56 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.6.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,29 +19,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `phpclass`
 --
-CREATE DATABASE IF NOT EXISTS `phpclass` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `phpclass`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pictures`
+-- Table structure for table `account`
 --
 
-CREATE TABLE pictures (
-    pictureID INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    annoncenID INT(6) NOT NULL,
-    picturename VARCHAR(30) NOT NULL,
-    filename VARCHAR(30) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-    
-    
-    CREATE TABLE account (
-    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    customerid INT(6) NOT NULL,
-    password VARCHAR(55) NOT NULL,
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE `account` (
+  `id` int(6) NOT NULL,
+  `customerid` int(6) NOT NULL,
+  `password` varchar(55) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -56,24 +45,17 @@ CREATE TABLE `advertisement` (
   `picturepath` varchar(240) DEFAULT NULL,
   `customerid` int(11) NOT NULL,
   `createdate` int(11) NOT NULL,
-  `date` TIMESTAMP NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `duration` int(11) NOT NULL,
   `transactionid` int(11) NOT NULL,
   `categoryid` int(11) NOT NULL,
-  `price` float,
-  `days` int(12),
-  `visitors` INT(12) NOT NULL DEFAULT 0,
-  `display` boolean NOT NULL,
-  `picturebox` VARCHAR(30)
+  `price` float DEFAULT NULL,
+  `days` int(12) DEFAULT NULL,
+  `visitors` int(12) NOT NULL DEFAULT '0',
+  `display` tinyint(1) NOT NULL,
+  `picturebox` varchar(30) DEFAULT NULL,
+  `pricefromseller` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONS FOR TABLE `advertisement`:
---   `customerid`
---       `customers` -> `id`
---   `transactionid`
---       `transactions` -> `id`
---
 
 -- --------------------------------------------------------
 
@@ -86,14 +68,6 @@ CREATE TABLE `advertisement2category` (
   `categoryid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- RELATIONS FOR TABLE `advertisement2category`:
---   `categoryid`
---       `category` -> `id`
---   `advertisementid`
---       `advertisement` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -103,12 +77,8 @@ CREATE TABLE `advertisement2category` (
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `parentid` int(11) NOT NULL DEFAULT 0
+  `parentid` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- RELATIONS FOR TABLE `category`:
---
 
 -- --------------------------------------------------------
 
@@ -127,14 +97,6 @@ CREATE TABLE `customerpaymentmethods` (
   `billingaddress` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- RELATIONS FOR TABLE `customerpaymentmethods`:
---   `customerid`
---       `customers` -> `id`
---   `paymentmethod`
---       `paymentoptions` -> `id`
---
-
 -- --------------------------------------------------------
 
 --
@@ -149,12 +111,16 @@ CREATE TABLE `customers` (
   `address1` varchar(55) NOT NULL,
   `houseNumber` varchar(55) NOT NULL,
   `zipcode` varchar(55) NOT NULL,
-  `city` varchar(55) NOT NULL
+  `city` varchar(55) NOT NULL,
+  `password` varchar(55) NOT NULL COMMENT 'sha1 hash of actual password'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- RELATIONS FOR TABLE `customers`:
+-- Dumping data for table `customers`
 --
+
+INSERT INTO `customers` (`id`, `firstname`, `lastname`, `emailaddress`, `address1`, `houseNumber`, `zipcode`, `city`, `password`) VALUES
+(2, 'admin', 'admin', 'admin@example.com', 'adminstreet', '0', '12345', 'adminville', 'd033e22ae348aeb5660fc2140aec35850c4da997');
 
 -- --------------------------------------------------------
 
@@ -167,9 +133,18 @@ CREATE TABLE `paymentoptions` (
   `paymenttype` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- RELATIONS FOR TABLE `paymentoptions`:
+-- Table structure for table `pictures`
 --
+
+CREATE TABLE `pictures` (
+  `pictureID` int(6) UNSIGNED NOT NULL,
+  `annoncenID` int(6) NOT NULL,
+  `picturename` varchar(30) NOT NULL,
+  `filename` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -188,20 +163,14 @@ CREATE TABLE `transactions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- RELATIONS FOR TABLE `transactions`:
---   `customerid`
---       `customers` -> `id`
---   `paymentoptionid`
---       `paymentoptions` -> `id`
---   `paymentmethodid`
---       `customerpaymentmethods` -> `id`
---   `advertisementid`
---       `advertisement` -> `id`
+-- Indexes for dumped tables
 --
 
 --
--- Indexes for dumped tables
+-- Indexes for table `account`
 --
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `advertisement`
@@ -236,13 +205,20 @@ ALTER TABLE `customerpaymentmethods`
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `emailaddress` (`emailaddress`);
 
 --
 -- Indexes for table `paymentoptions`
 --
 ALTER TABLE `paymentoptions`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pictures`
+--
+ALTER TABLE `pictures`
+  ADD PRIMARY KEY (`pictureID`);
 
 --
 -- Indexes for table `transactions`
@@ -259,6 +235,11 @@ ALTER TABLE `transactions`
 --
 
 --
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
@@ -272,7 +253,12 @@ ALTER TABLE `customerpaymentmethods`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `pictures`
+--
+ALTER TABLE `pictures`
+  MODIFY `pictureID` int(6) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `transactions`
 --
@@ -286,15 +272,15 @@ ALTER TABLE `transactions`
 -- Constraints for table `advertisement`
 --
 ALTER TABLE `advertisement`
-  ADD CONSTRAINT `advertisement_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customers` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
-  ADD CONSTRAINT `advertisement_ibfk_2` FOREIGN KEY (`transactionid`) REFERENCES `transactions` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+  ADD CONSTRAINT `advertisement_ibfk_1` FOREIGN KEY (`customerid`) REFERENCES `customers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `advertisement_ibfk_2` FOREIGN KEY (`transactionid`) REFERENCES `transactions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `advertisement2category`
 --
 ALTER TABLE `advertisement2category`
-  ADD CONSTRAINT `advertisement2category_ibfk_1` FOREIGN KEY (`categoryid`) REFERENCES `category` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
-  ADD CONSTRAINT `advertisement2category_ibfk_2` FOREIGN KEY (`advertisementid`) REFERENCES `advertisement` (`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+  ADD CONSTRAINT `advertisement2category_ibfk_1` FOREIGN KEY (`categoryid`) REFERENCES `category` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `advertisement2category_ibfk_2` FOREIGN KEY (`advertisementid`) REFERENCES `advertisement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `customerpaymentmethods`
