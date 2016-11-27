@@ -22,7 +22,7 @@ else
     	$DBLink=DBLogin();
         $userStatus=AuthenticateUser($login, $DBLink);
         while ($row = mysqli_fetch_assoc($userStatus)){
-        	if (HashPW($password) == $row['password']){
+        	if (HashPW($password) == $_row['password']){
         		$_SESSION['benutzername'] = $_POST['benutzername'];
         		$_SESSION['eingeloggt'] = true;
         		echo "<b>einloggen erfolgreich</b>";

@@ -1,13 +1,12 @@
 <?php
-function rubrik()
+function rubrik($DBLink)
 {
-    include ("dbMaster.php");
 
-    $sql = "SELECT rubrikID, rubrik FROM rubrik";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT id, name FROM category";
+    $result = mysqli_query($DBLink, $sql);
 
     while($row = mysqli_fetch_assoc($result)) 
     {
-        echo "<option value='" . $row["rubrikID"] . "'>" . $row["rubrik"] . "</option>";
+        echo "<option value='" . $row["id"] . "'>" . $row["name"] . "</option>";
     }
 }

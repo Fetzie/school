@@ -65,12 +65,9 @@ function DeleteUser($DBLink, $userEmailAddress, $session){
 
 function AlterUser($DBLink, $user){
 	
-	
-	
-	
 	$userID = $user["id"];
-	$userFirstName = $user["firstName"];
-	$userLastName = $user["lastName"];
+	$userFirstName = $user["firstname"];
+	$userLastName = $user["lastname"];
 	$password = HashPW($user["password"]);
 	$address = $user["address1"];
 	$houseNumber = $user["houseNumber"];
@@ -78,12 +75,12 @@ function AlterUser($DBLink, $user){
 	$city = $user["city"];
 	$emailaddress = $user["emailaddress"];
 	
-	$query = "UPDATE customers SET 'firstName' = " . $userFirstName . 
-									" 'lastName' = " . $userLastName . 
+	$query = "UPDATE customers SET 'firstname' = " . $userFirstName . 
+									" 'lastname' = " . $userLastName . 
 									" 'password' = " . $password . 
 									" 'address1' = " . $address . 
 									" 'houseNumber' = " . $houseNumber . 
-									" 'zipCode' = " . $zipCode . 
+									" 'zipcode' = " . $zipCode . 
 									" 'city' = " . $city . 
 									" 'email' = " . $EmailAddress .
 									" WHERE id = '" . $userID . "';";
