@@ -18,7 +18,7 @@ $DBLink=DBLogin();
         	$userStatus=AuthenticateUser($login, $DBLink);
  			while ($row = mysqli_fetch_assoc($userStatus)){
         		if (HashPW($password) == $row['password']){
-        			$_SESSION['benutzername'] = $_POST['benutzername'];
+        			$_SESSION['benutzername'] = $_POST['email'];
         			$_SESSION['eingeloggt'] = true;
         			echo "<b>einloggen erfolgreich</b>";
         		} else {
@@ -28,6 +28,46 @@ $DBLink=DBLogin();
         	}
     	}
     }
+    
+    if(isset($_POST['button']) && $_POST['button'] == 'registrieren')
+    {
+    	if ( $_POST['benutzername'] != "" && $_POST['kennwort'] != ""  )
+    	{
+    		$emailaddress=$_POST['email'];
+    		$password=$_POST['kennwort'];
+    		$firstname=$_POST['firstname'];
+    		$lastname=$_POST['lastname'];
+    		$street=$_POST['street'];
+    		$housenumber=$_POST['housenumber'];
+    		$city=$_POST['city'];
+    		$zipcode=$_POST['zipcode'];
+    		
+    		#$DBLink=DBLogin();
+    		$newUser=AddUser($DBLink, $firstname, $lastname, $password, $street, $housenumber, $city, $zipcode, $emailaddress);
+    		# log in the user after they create their account
+    		if($newUser){
+    			
+    				$_SESSION['benutzername'] = $_POST['email'];
+    				$_SESSION['eingeloggt'] = true;
+    				echo "<b>einloggen erfolgreich</b>";
+    				$subject="Ihr Account bei SellMyCar.com";
+    				$message="vielen Dank dass sie sich registriert haben. Wir haben bereits für sie ein Account angelegt.\n
+    						Sie können sich mit ihrer Emailaddresse und Passwort nun einloggen und Annoncen aufgeben.\n\n
+    						
+    						Ihr SellMyCar.com Partner";
+    				mail($emailaddress, $subject, $message);
+    				DBLogout($DBLink);
+    			}else{
+    				echo "Accounterstellung fehlgeschlagen aufgrund folgende Fehler:\n" . 
+      				print_r( mysqli_error_list($DBLink));
+    				DBLogout($DBLink);
+    			}
+    			
+    			
+    		}
+    	
+    }
+    
     
 $titel = "SellMyCar";
 include ("headMaster.php");

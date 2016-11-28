@@ -46,9 +46,27 @@ echo '<!DOCTYPE html>'
           . '<h4 class="modal-title">Sign Up</h4>'
         . '</div>'
         . '<div class="modal-body">'
-          . '<p>Some text in the modal.</p>'
-        . '</div>'
+           . "<form name='register' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='POST' >"
+           . "<label>Emailadresse:</label>"
+           . "<input type='email' class='form-control' name='email' value='' />"
+           . "<label>Kennwort:</label>"
+           . "<input type='password' class='form-control' name='kennwort' value='' />" 
+           . "<label>Vorname:</label>"
+           . "<input type='text' class='form-control' name='firstname' value='' />"
+           . "<label>Nachname:</label>"
+           . "<input type='text' class='form-control' name='lastname' value='' />"
+           . "<label>Strasse:</label>"
+           . "<input type='text' class='form-control' name='street' value='' />"
+           . "<label>Hausnummer:</label>"
+           . "<input type='text' class='form-control' name='housenumber' value='' />"
+           . "<label>Stadt:</label>"
+           . "<input type='text' class='form-control' name='city' value='' />"
+           . "<label>Postleitzahl:</label>"
+           . "<input type='text' class='form-control' name='zipcode' value='' />"		
+           . '</div>'
         . '<div class="modal-footer">'
+          . '<input type="Submit" value="Registrieren" name="button" class="btn btn-default" />'
+          . '</form>'
           . '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
         . '</div>'
       . '</div>'
