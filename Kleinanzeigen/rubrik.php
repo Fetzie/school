@@ -1,7 +1,7 @@
 <?php
-    $titel = "Rubrik";
-    include ("headMaster.php");
     include ("session.php");
+    $titel = "Rubrik";
+    include ("headMasterLogin.php");
     include ("dbMaster.php");
 		
                     
