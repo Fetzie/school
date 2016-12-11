@@ -20,7 +20,6 @@
  * @param String $City
  * @param String $ZipCode
  * @param String $EmailAddress
- * @param String $password
  * @return Returns success of user insert (bool)
  */
 function AddUser($DBLink, $firstName, $LastName, $Password, $Address1, $HouseNumber, $City, $ZipCode, $EmailAddress){
@@ -150,8 +149,8 @@ function DoesUserExist($emailaddress, $DBLink){
 		
 		array_push($users, $row[0]);
 	}
-	foreach ($users as $value){
-		if ($emailaddress == $users[$value]){
+	for ($i = 0; $i < count($users); $i++){
+		if ($emailaddress == $users[$i]){
 			
 			$exists = true;
 			break;
