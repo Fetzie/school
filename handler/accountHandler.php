@@ -20,13 +20,14 @@
  * @param String $City
  * @param String $ZipCode
  * @param String $EmailAddress
- * @return Returns success of user insert
+ * @param String $password
+ * @return Returns success of user insert (bool)
  */
-function AddUser(DBSession $DBLink, String $firstName, String $LastName, String $Password, String $Address1, int $HouseNumber, String $City, String $ZipCode, String $EmailAddress){
-	$HashedPW = HashPW($password);
+function AddUser($DBLink, $firstName, $LastName, $Password, $Address1, $HouseNumber, $City, $ZipCode, $EmailAddress){
+	$ResultAddUser = false;
 	$query = "INSERT INTO customers 
-			(firstname, lastname, email, password, address1, housenumber, city, zipcode) VALUES 
-			('".$firstName."', '".$LastName."', ".$HashedPW."', '".$Address1."', '".$HouseNumber."', '"
+			(firstname, lastname, password, address1, housenumber, city, zipcode, emailaddress) VALUES 
+			('".$firstName."', '".$LastName."', ".$Password."', '".$Address1."', '".$HouseNumber."', '"
 					.$City."', '".$ZipCode."', '".$EmailAddress."');";
 	
 	$ResultAddUser = mysqli_query($DBLink, $query);
@@ -40,9 +41,9 @@ function AddUser(DBSession $DBLink, String $firstName, String $LastName, String 
  * @param String $EmailAddress
  * @return unknown
  */
-function DeleteUser(DBSession $DBLink, String $userid, $session){
+function DeleteUser($DBLink, $userid, $session){
 	LogoutUser($session);
-	$Query = "DELETE FROM customers where email = '".$userid."';";
+	$Query = "DELETE FROM customer where email = '".$userid."';";
 	$ResultDeleteUser = mysqli_query($DBLink, $Query);
 	
 	return $ResultDeleteUser;
@@ -68,14 +69,14 @@ function AlterUser($DBLink, Array $user){
 	$city = $user["city"];
 	$emailaddress = $user["email"];
 	
-	$query = "UPDATE customers SET 'firstName' = " . $userFirstName . 
-									" 'lastName' = " . $userLastName . 
-									" 'password' = " . $password . 
-									" 'address1' = " . $address . 
-									" 'houseNumber' = " . $houseNumber . 
-									" 'zipCode' = " . $zipCode . 
-									" 'city' = " . $city . 
-									" 'email' = " . $EmailAddress .
+	$query = "UPDATE customers SET firstName = '" . $userFirstName . 
+									" ' lastName = '" . $userLastName . 
+									" ' password = '" . $password . 
+									" ' address1 = '" . $address . 
+									" ' houseNumber = '" . $houseNumber . 
+									" ' zipCode = '" . $zipCode . 
+									" ' city = '" . $city . 
+									" ' email = '" . $EmailAddress .
 									" WHERE id = '" . $userID . "';";
 	$alterResult = mysqli_query($DBLink, $query);
 	
@@ -122,10 +123,10 @@ function changePassword($DBLink, $password, $emailAddress){
 	$alterPassword = mysqli_query($DBLink, $query);
 }
 
-function HashPW(String $password){
+function HashPW($password){
 	
 	$hashValue = sha1($password);
-	return $HashValue;
+	return $hashValue;
 	
 }
 
@@ -141,21 +142,35 @@ function LoginUser($sessionId){
 	return $session;
 }
 
-
-function AuthenticateUser($login, $password, $DBLink){
-	$loggedIn = false;
-	$password = HashPW($password);
-	$query = "SELECT password from account where username = " . "\'" . $login . "\';";
-	$returnedPw = mysqli_query($DBlink, $query);
-	
-	if ($password == $returnedPw) {
-		$loggedIn = true;
-		$sessionId = session_id();
-		$session = LoginUser($sessionId);
+function DoesUserExist($emailaddress, $DBLink){
+	$exists = false;
+	$users = array();
+	$userexists = mysqli_query($DBLink, "SELECT emailaddress from customers;");
+	while ($row = mysqli_fetch_row($userexists)){
 		
-	}else {
-		$loggedIn = false;
+		array_push($users, $row[0]);
+	}
+	foreach ($users as $value){
+		if ($emailaddress == $users[$value]){
+			
+			$exists = true;
+			break;
+		}
+	}return $exists;
+	
+}
+function AuthenticateUser($login, $DBLink){
+	$query = "SELECT emailaddress, password from customers where emailaddress = " . "\'" . $login . "\';";
+	$userdata = array();
+	$returnedPw = mysqli_query($DBLink, $query);
+	while($row = mysqli_fetch_assoc($returnedPw))
+	{
+		array_push($userdata, $row['emailaddress'], $row['password']);
+		/*debugging
+		 * $password = $row['password'];
+		echo $password;
+		*/
 	}
 	
-	return $session;
+	return $userdata;
 }

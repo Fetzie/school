@@ -40,9 +40,21 @@ echo '<!DOCTYPE html>'
         . '<div class="modal-body">'
           . "<form name='signin' action='./annoncen_erstellen.php' method='POST' >"
            . "<label>E-Mail Adresse:</label>"
-           . "<input type='text' class='form-control' name='email' value='' />"
+           . "<input type='text' class='form-control' name='benutzername' value='' />"
            . "<label>Kennwort:</label>"
-           . "<input type='password' class='form-control' name='password' value='' />"
+           . "<input type='password' class='form-control' name='kennwort' value='' />"
+           . "<label>Vorname:</label>"
+           . "<input type='text' class='form-control' name='vorname' value='' />"
+           . "<label>Nachname:</label>"
+           . "<input type='text' class='form-control' name='nachname' value='' />"
+           . "<label>Straﬂe:</label>"
+           . "<input type='text' class='form-control' name='strasse' value='' />"
+           . "<label>Hausnummer:</label>"
+           . "<input type='text' class='form-control' name='hausnummer' value='' />"           		
+           . "<label>PLZ:</label>"
+           . "<input type='text' class='form-control' name='plz' value='' />"
+           . "<label>Stadt:</label>"
+           . "<input type='text' class='form-control' name='stadt' value='' />"
         . '</div>'
         . '<div class="modal-footer">'
           . '<input type="Submit" value="einrichten" name="button" class="btn btn-default" />'

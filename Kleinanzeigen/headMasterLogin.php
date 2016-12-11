@@ -22,7 +22,7 @@ echo '<!DOCTYPE html>'
    . '<nav class="navbar navbar-default">'
   . '<div class="container-fluid">'
     . '<div class="navbar-header">'
-      . '<a class="navbar-brand"><span class="glyphicon glyphicon-shopping-cart"></span> SellMyCar.com</a>'
+      . '<a class="navbar-brand" href="./index.php"><span class="glyphicon glyphicon-shopping-cart"></span> SellMyCar.com</a>'
     . '</div>';
         
     echo '<ul class="nav navbar-nav navbar-right">'
