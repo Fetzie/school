@@ -1,5 +1,10 @@
 <?php
-    if (! session_id()) session_start(); 
+session_start();
+
+session_destroy();
+$_SESSION = array();    
+
+    /*if (! session_id()) session_start(); 
     
     $_SESSION['benutzername'] = "";
     $_SESSION['eingeloggt'] = "";
@@ -8,7 +13,7 @@
     {
         if ( $_POST['benutzername'] != "" && $_POST['kennwort'] != ""  )
         {
-            if ( 
+            if 
                  $_POST['benutzername'] == "admin" 
                  AND 
                  $_POST['kennwort'] == "admin"
@@ -24,7 +29,7 @@
                 $_SESSION['eingeloggt'] = false;
             }
         }
-    }
+    }*/
     
     $titel = "SellMyCar";
     include ("headMaster.php");

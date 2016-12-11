@@ -1,7 +1,7 @@
 <?php
-    $titel = "Annoncen";
-    include ("headMaster.php");
     include ("session.php");
+    $titel = "Annoncen";
+    include ("headMasterLogin.php");
     include ("dbMaster.php");
     include ("price.php");
     include ("rubrik_anzeigen.php");
@@ -163,7 +163,7 @@
           rubrik();
     echo "</select><br>"
        . "Titel:<br><input type='text' name='titel'><br>"
-       . "Bilder:<br><input type='file' name='fileToUpload' id='fileToUpload'><br><span id='demo'></span><button type='button' onclick='pictureAdder()'>+</button><br>"
+       . "Bilder:<br><input type='file' name='fileToUpload' id='fileToUpload'><br>"
        . "Text:<br><textarea name='text'></textarea><br>"
        . "Preis:<br><input type='text' name='priceFromSeller'>&euro;<br>"
        . "<input type='radio' name='days' value='30' checked> 30 Tage<br>"

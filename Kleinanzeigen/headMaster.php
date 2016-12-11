@@ -7,7 +7,6 @@ echo '<!DOCTYPE html>'
         . '<meta name="viewport" content="width=device-width, initial-scale=1">'
         . "<link rel='shortcut icon' type='image/x-icon' href='car_icon.png' />"
 	. "<link rel='stylesheet' href='font-awesome/css/font-awesome.min.css'>"
-        . "<script type='text/javascript' language='JavaScript' src='Javascript/javascript.js'></script>"
         . '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">'
         . '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>'
         . '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>'
@@ -19,14 +18,7 @@ echo '<!DOCTYPE html>'
     . '<div class="navbar-header">'
       . '<a class="navbar-brand" href="./index.php"><span class="glyphicon glyphicon-shopping-cart"></span> SellMyCar.com</a>'
     . '</div>';
-        
-    if ( $_SESSION['eingeloggt'] == true )
-    {
-         echo '</div>'
-        . '</nav>';
-    }
-    else
-    {        
+                          
         echo '<ul class="nav navbar-nav navbar-right">'
            . '<li><a data-toggle="modal" data-target="#signup"><span class="glyphicon glyphicon-user"></span> Registrieren</a></li>'
            . '<li><a data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"></span> Anmelden</a></li>'
@@ -46,10 +38,16 @@ echo '<!DOCTYPE html>'
           . '<h4 class="modal-title">Sign Up</h4>'
         . '</div>'
         . '<div class="modal-body">'
-          . '<p>Some text in the modal.</p>'
+          . "<form name='signin' action='./annoncen_erstellen.php' method='POST' >"
+           . "<label>E-Mail Adresse:</label>"
+           . "<input type='text' class='form-control' name='email' value='' />"
+           . "<label>Kennwort:</label>"
+           . "<input type='password' class='form-control' name='password' value='' />"
         . '</div>'
         . '<div class="modal-footer">'
-          . '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
+          . '<input type="Submit" value="einrichten" name="button" class="btn btn-default" />'
+          . '</form>'
+          . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
         . '</div>'
       . '</div>'
       
@@ -68,8 +66,8 @@ echo '<!DOCTYPE html>'
           . '<h4 class="modal-title">Log In</h4>'
         . '</div>'
         . '<div class="modal-body">'
-           . "<form name='loggin' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' method='POST' >"
-           . "<label>Benutzername:</label>"
+           . "<form name='loggin' action='./annoncen_erstellen.php' method='POST' >"
+           . "<label>E-Mail Adresse:</label>"
            . "<input type='text' class='form-control' name='benutzername' value='' />"
            . "<label>Kennwort:</label>"
            . "<input type='password' class='form-control' name='kennwort' value='' />"
@@ -77,7 +75,7 @@ echo '<!DOCTYPE html>'
         . '<div class="modal-footer">'
           . '<input type="Submit" value="einloggen" name="button" class="btn btn-default" />'
           . '</form>'
-          . '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
+          . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
         . '</div>'
             . '</div>'
       
@@ -85,4 +83,3 @@ echo '<!DOCTYPE html>'
     . '</div>'
 
     . '<!-- Modal ende -->';
-    }

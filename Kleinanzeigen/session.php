@@ -1,9 +1,28 @@
 <?php
-if (! session_id()) session_start(); 
+include("../handler/accountHandler.php");
+
+session_start();
+
+if(isset($_POST['benutzername']))
+{
+    if( $_POST['benutzername'] == "admin" && $_POST['kennwort'] == "admin")
+    {
+        $_SESSION["eingeloggt"] = $_POST['benutzername'];
+    }
+}
+
+if(!isset($_SESSION["eingeloggt"]))
+{
+    header('Location: ./index.php');
+    exit;
+}
+                
+        
+/*if (! session_id()) session_start(); 
 
 if (!isset($_SESSION['eingeloggt']) || $_SESSION['eingeloggt'] != true)
 {
-    header('Location: http://localhost/Kleinanzeigen/index.php');
+    header('Location: ./index.php');
     exit;
 }
 else 
@@ -28,4 +47,4 @@ else
             $_SESSION['eingeloggt'] = false;
         }
     }
-}
+}*/
