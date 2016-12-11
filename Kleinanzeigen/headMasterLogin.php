@@ -26,12 +26,35 @@ echo '<!DOCTYPE html>'
     . '</div>';
         
     echo '<ul class="nav navbar-nav navbar-right">'
+            . '<li><a data-toggle="modal" data-target="#userdata"><span class="glyphicon glyphicon-user"></span> Benutzerdaten</a></li>'
             . '<li><a data-toggle="modal" data-target="#logout"><span class="glyphicon glyphicon-log-out"></span> Abmelden</a></li>'
            . '</ul>'
         . '</div>'
         . '</nav>'
-         
+        
         . '<div class="container">'
+            . '<!-- User Modal start  -->'
+            . '<div class="modal fade" id="userdata" role="dialog">'
+            . '<div class="modal-dialog">'
+
+                . '<!-- Modal content-->'
+                . '<div class="modal-content">'
+                    . '<div class="modal-header">'
+                        . '<button type="button" class="close" data-dismiss="modal">&times;</button>'
+                        . '<h4 class="modal-title">Benutzerdaten</h4>'
+                    . '</div>'
+                    . '<div class="modal-body">'
+                        . '<p>Benutzerdaten</p>'
+                    . '</div>'
+                    . '<div class="modal-footer">'
+                        . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
+                    . '</div>'
+                . '</div>'
+
+            . '</div>'
+            . '</div>'
+            . '<!-- User Modal ende -->'
+    
             . '<!-- Logout Modal start  -->'
             . '<div class="modal fade" id="logout" role="dialog">'
             . '<div class="modal-dialog">'
