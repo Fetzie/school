@@ -7,7 +7,7 @@ session_start();
 if(isset($_POST['benutzername'])){
 	$hashedPW = HashPW($_POST['kennwort']);
 	$exists = DoesUserExist($_POST['benutzername'], $conn);
-/* 	if ($exists = false){
+	if (!$exists){
 	
 		$newUser = AddUser($conn, $_POST['vorname'], $_POST['nachname'], $hashedPW,
 				$_POST['strasse'], $_POST['hausnummer'], $_POST['stadt'], $_POST['plz'], $_POST['benutzername']);
@@ -16,17 +16,17 @@ if(isset($_POST['benutzername'])){
 		}else{
 			echo "Benutzer erstellen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
 		}
-	}else */
+	}else 
 	{
 	
 		$userdata = AuthenticateUser($_POST['benutzername'], $conn);
 	
-		echo "username from form: " . $_POST['benutzername'] . PHP_EOL;
-		echo "password from form: " . $_POST['kennwort'] . PHP_EOL;
-		echo "hashed password from form: " . $hashedPW . PHP_EOL;
-		echo "username from db: " . $userdata['emailaddress'] . PHP_EOL;
-		echo "password from db: " . $userdata['password'] . PHP_EOL;
-		if( $_POST['benutzername'] == $userdata['emailaddress'] && $hashedPW == $userdata['password'])
+		echo "username from form: " . $_POST['benutzername'] . "</br>" . PHP_EOL;
+		echo "password from form: " . $_POST['kennwort'] . "</br>" . PHP_EOL;
+		echo "hashed password from form: " . $hashedPW . "</br>" . PHP_EOL;
+		echo "username from db: " . $userdata['username'] . "</br>" . PHP_EOL;
+		echo "password from db: " . $userdata['password'] . "</br>" . PHP_EOL;
+		if( $_POST['benutzername'] == $userdata['username'] && $hashedPW == $userdata['password'])
 			{
 				$_SESSION["eingeloggt"] = $_POST['benutzername'];
 			}

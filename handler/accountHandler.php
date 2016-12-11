@@ -25,7 +25,7 @@
 function AddUser($DBLink, $firstName, $LastName, $Password, $Address1, $HouseNumber, $City, $ZipCode, $EmailAddress){
 	$ResultAddUser = false;
 	$query = "INSERT INTO customers 
-			(firstname, lastname, password, address1, housenumber, city, zipcode, emailaddress) VALUES 
+			(firstname, lastname, passcode, address1, housenumber, city, zipcode, emailaddress) VALUES 
 			('".$firstName."', '".$LastName."', ".$Password."', '".$Address1."', '".$HouseNumber."', '"
 					.$City."', '".$ZipCode."', '".$EmailAddress."');";
 	
@@ -145,9 +145,9 @@ function DoesUserExist($emailaddress, $DBLink){
 	$exists = false;
 	$users = array();
 	$userexists = mysqli_query($DBLink, "SELECT emailaddress from customers;");
-	while ($row = mysqli_fetch_row($userexists)){
-		
-		array_push($users, $row[0]);
+	for ($i = 0; $i < ($row = mysqli_fetch_row($userexists)); $i++){
+
+	array_push($users, $row[$i]);
 	}
 	for ($i = 0; $i < count($users); $i++){
 		if ($emailaddress == $users[$i]){
@@ -157,19 +157,19 @@ function DoesUserExist($emailaddress, $DBLink){
 		}
 	}return $exists;
 	
-}
-function AuthenticateUser($login, $DBLink){
-	$query = "SELECT emailaddress, password from customers where emailaddress = " . "\'" . $login . "\';";
-	$userdata = array();
+}function AuthenticateUser($login, $DBLink){
+	$query = "SELECT emailaddress, passcode from customers where emailaddress = " . "'" . $login . "';";
+	$userdata = array(['username'], ['password']);
 	$returnedPw = mysqli_query($DBLink, $query);
-	while($row = mysqli_fetch_assoc($returnedPw))
-	{
-		array_push($userdata, $row['emailaddress'], $row['password']);
-		/*debugging
-		 * $password = $row['password'];
-		echo $password;
-		*/
-	}
-	
+	while ($row = mysqli_fetch_assoc($returnedPw)){
+		//echo $row['emailaddress']."</br>";
+		//echo $row['passcode']."</br>";
+		$email = $row['emailaddress'];
+		$password = $row['passcode'];
+		$userdata['username'] = $email;
+		$userdata['password'] = $password;
+	}		
 	return $userdata;
 }
+
+?>
