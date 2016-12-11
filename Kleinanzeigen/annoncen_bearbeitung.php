@@ -1,7 +1,7 @@
 <?php
-    $titel = "Annoncen-Bearbeitung";
-    include ("headMaster.php");
     include ("session.php");
+    $titel = "Annoncen-Bearbeitung";
+    include ("headMasterLogin.php");
     include ("dbMaster.php");
                     
     
