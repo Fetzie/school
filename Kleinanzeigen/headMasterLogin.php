@@ -1,4 +1,11 @@
 <?php
+
+include ("dbMaster.php");
+
+$sql = "SELECT * from customers where emailaddress = '" . $_SESSION["eingeloggt"] . "';";
+$result = mysqli_query($conn, $sql);
+
+
 echo '<!DOCTYPE html>'
    . '<html lang="de">'
    . '<head>'
@@ -44,9 +51,41 @@ echo '<!DOCTYPE html>'
                         . '<h4 class="modal-title">Benutzerdaten</h4>'
                     . '</div>'
                     . '<div class="modal-body">'
-                        . '<p>Benutzerdaten</p>'
+                        .'<p>Benutzerdaten</p>' 
+                        . "<form name='signin' action='./annoncen_erstellen.php' method='POST' >";
+                        while ($row = mysqli_fetch_assoc($result))
+                        {
+                        	$emailaddress = $row["emailaddress"];
+                        	$firstname = $row["firstname"];
+                        	$lastname = $row["lastname"];
+                        	$housenumber = $row["houseNumber"];
+                        	$street = $row["address1"];
+                        	$city = $row["city"];
+                        	$plz = $row["zipcode"];
+                        	
+                        }
+                        	echo "<label>E-Mail Adresse: $emailaddress</label>"
+                        		. "<input type='hidden' class='form-control' name='benutzername' value='$emailaddress' />"
+                        		. "<label>Kennwort:</label>"
+                        		. "<input type='password' class='form-control' name='kennwort' value='' />"
+                        		. "<label>Kennwort wiederholen:</label>"
+                        		. "<input type='password' class='form-control' name='kennwortRepeat' value='' />"
+                        		. "<label>Vorname:</label>"
+                        		. "<input type='text' class='form-control' name='vorname' value='$firstname' />"
+                        		. "<label>Nachname:</label>"
+                        		. "<input type='text' class='form-control' name='nachname' value='$lastname' />"
+                        		. "<label>Straﬂe:</label>"
+                        		. "<input type='text' class='form-control' name='strasse' value='$street' />"
+                        		. "<label>Hausnummer:</label>"
+                        		. "<input type='text' class='form-control' name='hausnummer' value='$housenumber' />"
+                        		. "<label>PLZ:</label>"
+                        		. "<input type='text' class='form-control' name='plz' value='$plz' />"
+                        		. "<label>Stadt:</label>"
+                        		. "<input type='text' class='form-control' name='stadt' value='$city' />"
+                        		. "<input type='hidden' class='form-control' name='controlmethod' value='editUser' />"                        
                     . '</div>'
                     . '<div class="modal-footer">'
+                    	. '<input type="Submit" value="editieren" name="buttonEdit" class="btn btn-default" />'
                         . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
                     . '</div>'
                 . '</div>'

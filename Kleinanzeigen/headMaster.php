@@ -43,7 +43,9 @@ echo '<!DOCTYPE html>'
            . "<input type='text' class='form-control' name='benutzername' value='' />"
            . "<label>Kennwort:</label>"
            . "<input type='password' class='form-control' name='kennwort' value='' />"
-           . "<label>Vorname:</label>"
+           . "<label>Kennwort wiederholen:</label>"
+           . "<input type='password' class='form-control' name='kennwortRepeat' value='' />"
+           . "<label>Vorname:</label>"		
            . "<input type='text' class='form-control' name='vorname' value='' />"
            . "<label>Nachname:</label>"
            . "<input type='text' class='form-control' name='nachname' value='' />"
@@ -55,9 +57,10 @@ echo '<!DOCTYPE html>'
            . "<input type='text' class='form-control' name='plz' value='' />"
            . "<label>Stadt:</label>"
            . "<input type='text' class='form-control' name='stadt' value='' />"
+           . "<input type='hidden' class='form-control' name='controlmethod' value='createUser' />"		
         . '</div>'
         . '<div class="modal-footer">'
-          . '<input type="Submit" value="einrichten" name="button" class="btn btn-default" />'
+          . '<input type="Submit" value="einrichten" name="buttonCreate" class="btn btn-default" />'
           . '</form>'
           . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
         . '</div>'
@@ -83,9 +86,10 @@ echo '<!DOCTYPE html>'
            . "<input type='text' class='form-control' name='benutzername' value='' />"
            . "<label>Kennwort:</label>"
            . "<input type='password' class='form-control' name='kennwort' value='' />"
+           . "<input type='hidden' class='form-control' name='controlmethod' value='logonUser' />"
         . '</div>'
         . '<div class="modal-footer">'
-          . '<input type="Submit" value="einloggen" name="button" class="btn btn-default" />'
+          . '<input type="Submit" value="einloggen" name="buttonLogon" class="btn btn-default" />'
           . '</form>'
           . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
         . '</div>'
