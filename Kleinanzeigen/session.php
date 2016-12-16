@@ -109,9 +109,8 @@ if ($_POST['controlmethod'] == 'editUser' && ($_POST['kennwort'] == $_POST['kenn
 						. "address1 = '".$_POST['strasse'] . $mysqliSeparatorNoTrailingApostrophe
 						. "houseNumber = ".$_POST['hausnummer'] . ", "
 						. "city = '".$_POST['stadt'] . $mysqliSeparatorNoTrailingApostrophe
-						. "zipcode = '".$_POST['plz'] . $mysqliSeparatorNoTrailingApostrophe
-						. "emailaddress = '".$_POST['benutzername']
-						. "';";
+						. "zipcode = '".$_POST['plz']
+						. "' WHERE emailaddress = '". $_POST['benutzername'] . "';";
 	
 						$ResultEditUser = mysqli_query($conn, $query);
 						#$newUser = AddUser($conn, $_POST['vorname'], $_POST['nachname'], $hashedPW,

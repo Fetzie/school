@@ -64,8 +64,8 @@ echo '<!DOCTYPE html>'
                         	$plz = $row["zipcode"];
                         	
                         }
-                        	echo "<label>E-Mail Adresse:</label>"
-                        		. "<input type='text' class='form-control' name='benutzername' value='$emailaddress' />"
+                        	echo "<label>E-Mail Adresse: $emailaddress</label>"
+                        		. "<input type='hidden' class='form-control' name='benutzername' value='$emailaddress' />"
                         		. "<label>Kennwort:</label>"
                         		. "<input type='password' class='form-control' name='kennwort' value='' />"
                         		. "<label>Kennwort wiederholen:</label>"
