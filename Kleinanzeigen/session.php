@@ -3,7 +3,7 @@ include("../handler/accountHandler.php");
 include("./dbMaster.php");
 session_start();
 
-if ($_POST['controlmethod'] == 'createUser' && $_SESSION["eingeloggt"] == ""){
+if ($_POST["controlmethod"] == "createUser" && $_SESSION["eingeloggt"] == ""){
 
 	if(isset($_POST['benutzername'])){
 		$hashedPW = HashPW($_POST['kennwort']);
@@ -62,12 +62,13 @@ if ($_POST['controlmethod'] == 'createUser' && $_SESSION["eingeloggt"] == ""){
 	}
 }
 	
-if ($_POST['controlmethod'] == 'logonUser' && $_SESSION["eingeloggt"] == ""){
+if ($_POST["controlmethod"] == "logonUser" && $_SESSION["eingeloggt"] == ""){
 	 
-	
-	$hashedPW = HashPW($_POST['kennwort']);
-		$authenticationQuery = "SELECT emailaddress, passcode from customers where emailaddress = " . "'" . $_POST['benutzername'] . "';";
+		$email = null;
+		$hashedPW = HashPW($_POST['kennwort']);
 		$userdata = array(['username'], ['password']);
+	
+		$authenticationQuery = "SELECT emailaddress, passcode from customers where emailaddress = " . "'" . $_POST['benutzername'] . "';";
 		$returnedPw = mysqli_query($conn, $authenticationQuery);
 		while ($row = mysqli_fetch_assoc($returnedPw)){
 			//echo $row['emailaddress']."</br>";
@@ -76,7 +77,9 @@ if ($_POST['controlmethod'] == 'logonUser' && $_SESSION["eingeloggt"] == ""){
 			$password = $row['passcode'];
 			$userdata['username'] = $email;
 			$userdata['password'] = $password;
+
 		}
+		
 		
 		#$userdata = AuthenticateUser($_POST['benutzername'], $conn);
 	
@@ -89,15 +92,15 @@ if ($_POST['controlmethod'] == 'logonUser' && $_SESSION["eingeloggt"] == ""){
 			{
 				$_SESSION["eingeloggt"] = $_POST['benutzername'];
 			}else{
-							echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] db connection closing failed " . "</br>" . PHP_EOL;
-							echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
-							echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
-							echo "Benutzer editieren fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
-						}
+					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] db connection failed " . "</br>" . PHP_EOL;
+					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
+					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
+					echo "Benutzer einloggen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
+				}
 	
 }
 	
-if ($_POST['controlmethod'] == 'editUser' && ($_POST['kennwort'] == $_POST['kennwortRepeat']) && $_SESSION["eingeloggt"] != ""){
+if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kennwortRepeat']) && $_SESSION["eingeloggt"] != ""){
 	$hashedPW = HashPW($_POST['kennwort']);
 	$mysqliSeparator = "', '";
 	$mysqliSeparatorNoTrailingApostrophe = "', ";
