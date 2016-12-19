@@ -29,7 +29,7 @@ echo '<!DOCTYPE html>'
    . '<nav class="navbar navbar-default">'
   . '<div class="container-fluid">'
     . '<div class="navbar-header">'
-      . '<a class="navbar-brand" href="./index.php"><span class="glyphicon glyphicon-shopping-cart"></span> SellMyCar.com</a>'
+      . '<a class="navbar-brand" <span class="glyphicon glyphicon-shopping-cart"></span> SellMyCar.com</a>'
     . '</div>';
         
     echo '<ul class="nav navbar-nav navbar-right">'
@@ -51,7 +51,6 @@ echo '<!DOCTYPE html>'
                         . '<h4 class="modal-title">Benutzerdaten</h4>'
                     . '</div>'
                     . '<div class="modal-body">'
-                        .'<p>Benutzerdaten</p>' 
                         . "<form name='signin' action='./annoncen_erstellen.php' method='POST' >";
                         while ($row = mysqli_fetch_assoc($result))
                         {
@@ -62,26 +61,28 @@ echo '<!DOCTYPE html>'
                         	$street = $row["address1"];
                         	$city = $row["city"];
                         	$plz = $row["zipcode"];
+                        
                         	
                         }
-                        	echo "<label>E-Mail Adresse: $emailaddress</label>"
-                        		. "<input type='hidden' class='form-control' name='benutzername' value='$emailaddress' />"
-                        		. "<label>Kennwort:</label>"
-                        		. "<input type='password' class='form-control' name='kennwort' value='' />"
+                        	echo "<label>E-Mail Adresse: </label>"
+                        		. "<input type='email' class='form-control' name='benutzername' value='$emailaddress' readonly='readonly' />"
+                        		. "<label>Kennwort: (bitte ihr altes Passwort eingeben wenn sie diese nicht ‰ndern wollen) </label>"
+                        		. "<label>Ihr Passwort muss aus mindestens 1 Groﬂbuchstabe, 1 Kleinbuchstabe, 1 Zahl/Sonderzeichen bestehen und mindestens 8 Zeichen lang sein"		
+                        		. "<input type='password' class='form-control' name='kennwort' value='' pattern='(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$' required/>"
                         		. "<label>Kennwort wiederholen:</label>"
-                        		. "<input type='password' class='form-control' name='kennwortRepeat' value='' />"
+                        		. "<input type='password' class='form-control' name='kennwortRepeat' value=''  pattern='(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$' required/>"
                         		. "<label>Vorname:</label>"
-                        		. "<input type='text' class='form-control' name='vorname' value='$firstname' />"
+                        		. "<input type='text' class='form-control' name='vorname' value='$firstname' required />"
                         		. "<label>Nachname:</label>"
-                        		. "<input type='text' class='form-control' name='nachname' value='$lastname' />"
+                        		. "<input type='text' class='form-control' name='nachname' value='$lastname' required />"
                         		. "<label>Straﬂe:</label>"
-                        		. "<input type='text' class='form-control' name='strasse' value='$street' />"
+                        		. "<input type='text' class='form-control' name='strasse' value='$street' required />"
                         		. "<label>Hausnummer:</label>"
-                        		. "<input type='text' class='form-control' name='hausnummer' value='$housenumber' />"
+                        		. "<input type='text' class='form-control' name='hausnummer' value='$housenumber' required />"
                         		. "<label>PLZ:</label>"
-                        		. "<input type='text' class='form-control' name='plz' value='$plz' />"
+                        		. "<input type='text' class='form-control' name='plz' value='$plz' required />"
                         		. "<label>Stadt:</label>"
-                        		. "<input type='text' class='form-control' name='stadt' value='$city' />"
+                        		. "<input type='text' class='form-control' name='stadt' value='$city' required />"
                         		. "<input type='hidden' class='form-control' name='controlmethod' value='editUser' />"                        
                     . '</div>'
                     . '<div class="modal-footer">'

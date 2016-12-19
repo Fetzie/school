@@ -155,15 +155,15 @@
     }
     
     
-    echo "<a href='rubrik.php'>Rubrik erstellen</a>";
+    echo "<a href='rubrik.php'>Rubrik erstellen</a></br>";
     
     echo "<form name='newEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' enctype='multipart/form-data'>"
-       . "Rubrik:<br>"
+       . "Rubrik:</br>"
        . "<select name='rubrik'>";
           rubrik();
     echo "</select><br>"
        . "Titel:<br><input type='text' name='titel'><br>"
-       . "Bilder:<br><input type='file' name='fileToUpload' id='fileToUpload'><br>"
+       . "Bilder:<br><input type='file' name='fileToUpload' id='fileToUpload' multiple><br>"
        . "Text:<br><textarea name='text'></textarea><br>"
        . "Preis:<br><input type='text' name='priceFromSeller'>&euro;<br>"
        . "<input type='radio' name='days' value='30' checked> 30 Tage<br>"

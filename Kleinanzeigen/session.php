@@ -3,7 +3,7 @@ include("../handler/accountHandler.php");
 include("./dbMaster.php");
 session_start();
 
-if ($_POST["controlmethod"] == "createUser" && $_SESSION["eingeloggt"] == ""){
+if ($_POST["controlmethod"] == "createUser" && !isset($_SESSION["eingeloggt"])){
 
 	if(isset($_POST['benutzername'])){
 		$hashedPW = HashPW($_POST['kennwort']);
@@ -40,8 +40,8 @@ if ($_POST["controlmethod"] == "createUser" && $_SESSION["eingeloggt"] == ""){
 					('".$_POST['vorname'].$mysqliSeparator
 						.$_POST['nachname'].$mysqliSeparator
 						.$hashedPW.$mysqliSeparator
-						.$_POST['strasse'].$mysqliSeparatorNoTrailingApostrophe 
-						.$_POST['hausnummer'].$mysqliSeparatorNoLeadingApostrophe
+						.$_POST['strasse'].$mysqliSeparator 
+						.$_POST['hausnummer'].$mysqliSeparator
 						.$_POST['stadt'].$mysqliSeparator
 						.$_POST['plz'].$mysqliSeparator
 						.$_POST['benutzername']
@@ -62,7 +62,7 @@ if ($_POST["controlmethod"] == "createUser" && $_SESSION["eingeloggt"] == ""){
 	}
 }
 	
-if ($_POST["controlmethod"] == "logonUser" && $_SESSION["eingeloggt"] == ""){
+if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 	 
 		$email = null;
 		$hashedPW = HashPW($_POST['kennwort']);
@@ -100,7 +100,7 @@ if ($_POST["controlmethod"] == "logonUser" && $_SESSION["eingeloggt"] == ""){
 	
 }
 	
-if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kennwortRepeat']) && $_SESSION["eingeloggt"] != ""){
+if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kennwortRepeat']) && isset($_SESSION["eingeloggt"])){
 	$hashedPW = HashPW($_POST['kennwort']);
 	$mysqliSeparator = "', '";
 	$mysqliSeparatorNoTrailingApostrophe = "', ";
@@ -110,23 +110,22 @@ if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kenn
 						. "lastname = '".$_POST['nachname'] . $mysqliSeparatorNoTrailingApostrophe
 						. "passcode = '".$hashedPW . $mysqliSeparatorNoTrailingApostrophe
 						. "address1 = '".$_POST['strasse'] . $mysqliSeparatorNoTrailingApostrophe
-						. "houseNumber = ".$_POST['hausnummer'] . ", "
+						. "houseNumber = '".$_POST['hausnummer'] . $mysqliSeparatorNoTrailingApostrophe
 						. "city = '".$_POST['stadt'] . $mysqliSeparatorNoTrailingApostrophe
 						. "zipcode = '".$_POST['plz']
 						. "' WHERE emailaddress = '". $_POST['benutzername'] . "';";
 	
-						$ResultEditUser = mysqli_query($conn, $query);
-						#$newUser = AddUser($conn, $_POST['vorname'], $_POST['nachname'], $hashedPW,
-						#$_POST['strasse'], $_POST['hausnummer'], $_POST['stadt'], $_POST['plz'], $_POST['benutzername']);
-						if ($ResultEditUser){
-							$_SESSION["eingeloggt"] = $_POST['benutzername'];
-						}else{
-							echo date("Y-M-d G:i:s", time()) . " : [session.editUser] db connection closing failed " . "</br>" . PHP_EOL;
-							echo date("Y-M-d G:i:s", time()) . " : [session.editUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
-							echo date("Y-M-d G:i:s", time()) . " : [session.editUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
-							echo "Benutzer editieren fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
-						}
-	
+	$ResultEditUser = mysqli_query($conn, $query);
+	#$newUser = AddUser($conn, $_POST['vorname'], $_POST['nachname'], $hashedPW,
+	#$_POST['strasse'], $_POST['hausnummer'], $_POST['stadt'], $_POST['plz'], $_POST['benutzername']);
+	if ($ResultEditUser){
+		$_SESSION["eingeloggt"] = $_POST['benutzername'];
+	}else{
+		echo date("Y-M-d G:i:s", time()) . " : [session.editUser] db connection closing failed " . "</br>" . PHP_EOL;
+		echo date("Y-M-d G:i:s", time()) . " : [session.editUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
+		echo date("Y-M-d G:i:s", time()) . " : [session.editUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
+		echo "Benutzer editieren fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
+		}
 }
 
 
