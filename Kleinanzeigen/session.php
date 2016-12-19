@@ -83,11 +83,13 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 		
 		#$userdata = AuthenticateUser($_POST['benutzername'], $conn);
 	
-		echo "username from form: " . $_POST['benutzername'] . "</br>" . PHP_EOL;
+		/* for debugging...
+		 * echo "username from form: " . $_POST['benutzername'] . "</br>" . PHP_EOL;
 		echo "password from form: " . $_POST['kennwort'] . "</br>" . PHP_EOL;
 		echo "hashed password from form: " . $hashedPW . "</br>" . PHP_EOL;
 		echo "username from db: " . $userdata['username'] . "</br>" . PHP_EOL;
 		echo "password from db: " . $userdata['password'] . "</br>" . PHP_EOL;
+		*/
 		if( $_POST['benutzername'] == $userdata['username'] && $hashedPW == $userdata['password'])
 			{
 				$_SESSION["eingeloggt"] = $_POST['benutzername'];
