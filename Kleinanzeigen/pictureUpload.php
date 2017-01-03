@@ -4,6 +4,9 @@ function pictureUpload()
 {
     include("./dbMaster.php");
     
+    global $conn;
+    $last_id = mysqli_insert_id($conn);
+    
     $anzahl = count($_FILES["fileToUpload"]["name"]);
 
     for ($i=0; $i < $anzahl; $i++)
@@ -18,10 +21,7 @@ function pictureUpload()
                 (
                         $_FILES["fileToUpload"]["tmp_name"][$i] ,
                         "Pictures/" . $_FILES["fileToUpload"]["name"][$i]
-                );
-                
-                global $conn;
-                $last_id = mysqli_insert_id($conn);
+                )
 
                 $pictureName = $_FILES['fileToUpload']['name'][$i];
                 
