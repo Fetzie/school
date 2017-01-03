@@ -66,7 +66,7 @@
         {
             $annoncenID = $_POST["annoncenID"];
  
-            $sql = "DELETE FROM annoncen WHERE annoncenID=$annoncenID";
+            $sql = "DELETE FROM pictures WHERE annoncenID=$annoncenID; DELETE FROM annoncen WHERE annoncenID=$annoncenID;";
 
             if (mysqli_query($conn, $sql))
             {
