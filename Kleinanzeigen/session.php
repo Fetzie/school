@@ -3,8 +3,20 @@ include("../handler/accountHandler.php");
 include("./dbMaster.php");
 session_start();
 
-if ($_POST["controlmethod"] == "createUser" && !isset($_SESSION["eingeloggt"])){
+function regexMatch($pattern, $subject){
+	
+	$result = preg_match($pattern, $subject);
+	return $result;
+	
+}
 
+$regexPatternName = "/(^[A-Z]{1})([a-z]+)/";
+$regexPatternHouseNumber = "/[A-Za-z]*[ ]?[0-9]+[ ]?([A-Za-z]*)/";
+$regexPatternZipCode = "/[0-9]{5}/";
+$regexPatternEmail = "/[a-z1-9]*[-_.]*[a-z1-9]*@[a-z0-9]*([.][a-z]*){1,2}/";
+
+if ($_POST["controlmethod"] == "createUser" && !isset($_SESSION["eingeloggt"])){
+	
 	if(isset($_POST['benutzername'])){
 		$hashedPW = HashPW($_POST['kennwort']);
 		$exists = false;
@@ -28,42 +40,64 @@ if ($_POST["controlmethod"] == "createUser" && !isset($_SESSION["eingeloggt"])){
 			}
 		}
 	
-#$exists = DoesUserExist($_POST['benutzername'], $conn);
-		if (!$exists && ($_POST['kennwort'] == $_POST['kennwortRepeat'])){
+		# regex match for checking the data is realistic
+		
+
+		
+		$matchFirstName = regexMatch($regexPatternName, $_POST['vorname']);
+		$matchLastName = regexMatch($regexPatternName, $_POST['nachname']);
+		$matchStreet = regexMatch($regexPatternName, $_POST['strasse']);
+		$matchHouseNumber = regexMatch($regexPatternHouseNumber, $_POST['hausnummer']);
+		$matchTown = regexMatch($regexPatternName, $_POST['stadt']);
+		$matchZipCode = regexMatch($regexPatternZipCode, $_POST['plz']);
+		$matchEmail = regexMatch($regexPatternEmail, $_POST['benutzername']);
+		
+		if($matchFirstName = $matchLastName = $matchStreet = $matchHouseNumber = $matchHouseNumber = $matchTown = $matchZipCode = $matchEmail == 1){
+			
+			if (!$exists && ($_POST['kennwort'] == $_POST['kennwortRepeat'])){
 	
-			$mysqliSeparator = "', '";
-			$mysqliSeparatorNoTrailingApostrophe = "', ";
-			$mysqliSeparatorNoLeadingApostrophe = ", '";
-			$query = "INSERT INTO customers 
-					(firstname, lastname, passcode, address1, housenumber, city, zipcode, emailaddress) 
-					VALUES 
-					('".$_POST['vorname'].$mysqliSeparator
-						.$_POST['nachname'].$mysqliSeparator
-						.$hashedPW.$mysqliSeparator
-						.$_POST['strasse'].$mysqliSeparator 
-						.$_POST['hausnummer'].$mysqliSeparator
-						.$_POST['stadt'].$mysqliSeparator
-						.$_POST['plz'].$mysqliSeparator
-						.$_POST['benutzername']
-						."');";
+				$mysqliSeparator = "', '";
+				$mysqliSeparatorNoTrailingApostrophe = "', ";
+				$mysqliSeparatorNoLeadingApostrophe = ", '";
+				$query = "INSERT INTO customers 
+						(firstname, lastname, passcode, address1, housenumber, city, zipcode, emailaddress) 
+						VALUES 
+						('".$_POST['vorname'].$mysqliSeparator
+							.$_POST['nachname'].$mysqliSeparator
+							.$hashedPW.$mysqliSeparator
+							.$_POST['strasse'].$mysqliSeparator 
+							.$_POST['hausnummer'].$mysqliSeparator
+							.$_POST['stadt'].$mysqliSeparator
+							.$_POST['plz'].$mysqliSeparator
+							.$_POST['benutzername']
+							."');";
 	
-			$ResultAddUser = mysqli_query($conn, $query);
-	#$newUser = AddUser($conn, $_POST['vorname'], $_POST['nachname'], $hashedPW,
-				#$_POST['strasse'], $_POST['hausnummer'], $_POST['stadt'], $_POST['plz'], $_POST['benutzername']);
-			if ($ResultAddUser){
-				$_SESSION["eingeloggt"] = $_POST['benutzername'];
-			}else{
-				echo date("Y-M-d G:i:s", time()) . " : [session.createUser] db connection closing failed " . "</br>" . PHP_EOL;
-				echo date("Y-M-d G:i:s", time()) . " : [session.createUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
-				echo date("Y-M-d G:i:s", time()) . " : [session.createUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
-				echo "Benutzer erstellen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
+				$ResultAddUser = mysqli_query($conn, $query);
+				
+				if ($ResultAddUser){
+					$_SESSION["eingeloggt"] = $_POST['benutzername'];
+				}else{
+					echo date("Y-M-d G:i:s", time()) . " : [session.createUser] db connection closing failed " . "</br>" . PHP_EOL;
+					echo date("Y-M-d G:i:s", time()) . " : [session.createUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
+					echo date("Y-M-d G:i:s", time()) . " : [session.createUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
+					echo "Benutzer erstellen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
+				}
 			}
+		}else{
+			echo "Ungültige Eingabe, bitte erneut versuchen";
 		}
 	}
 }
 	
 if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 	 
+	
+	# regex match for checking the data is realistic
+
+	$matchEmail = regexMatch($regexPatternEmail, $_POST['benutzername']);
+	
+	if($matchEmail == 1){
+	
 		$email = null;
 		$hashedPW = HashPW($_POST['kennwort']);
 		$userdata = array(['username'], ['password']);
@@ -80,16 +114,7 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 
 		}
 		
-		
-		#$userdata = AuthenticateUser($_POST['benutzername'], $conn);
-	
-		/* for debugging...
-		 * echo "username from form: " . $_POST['benutzername'] . "</br>" . PHP_EOL;
-		echo "password from form: " . $_POST['kennwort'] . "</br>" . PHP_EOL;
-		echo "hashed password from form: " . $hashedPW . "</br>" . PHP_EOL;
-		echo "username from db: " . $userdata['username'] . "</br>" . PHP_EOL;
-		echo "password from db: " . $userdata['password'] . "</br>" . PHP_EOL;
-		*/
+
 		if( $_POST['benutzername'] == $userdata['username'] && $hashedPW == $userdata['password'])
 			{
 				$_SESSION["eingeloggt"] = $_POST['benutzername'];
@@ -99,10 +124,26 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
 					echo "Benutzer einloggen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
 				}
-	
+	}else{
+		echo "Benutzer einloggen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
+	}
 }
 	
 if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kennwortRepeat']) && isset($_SESSION["eingeloggt"])){
+	
+	# regex match for checking the data is realistic
+	
+	$matchFirstName = regexMatch($regexPatternName, $_POST['vorname']);
+	$matchLastName = regexMatch($regexPatternName, $_POST['nachname']);
+	$matchStreet = regexMatch($regexPatternName, $_POST['strasse']);
+	$matchHouseNumber = regexMatch($regexPatternHouseNumber, $_POST['hausnummer']);
+	$matchTown = regexMatch($regexPatternName, $_POST['stadt']);
+	$matchZipCode = regexMatch($regexPatternZipCode, $_POST['plz']);
+	$matchEmail = regexMatch($regexPatternEmail, $_POST['benutzername']);
+	
+	if($matchFirstName = $matchLastName = $matchStreet = $matchHouseNumber = $matchHouseNumber
+			= $matchTown = $matchTown = $matchZipCode = $matchEmail == 1){
+	
 	$hashedPW = HashPW($_POST['kennwort']);
 	$mysqliSeparator = "', '";
 	$mysqliSeparatorNoTrailingApostrophe = "', ";
@@ -118,8 +159,7 @@ if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kenn
 						. "' WHERE emailaddress = '". $_POST['benutzername'] . "';";
 	
 	$ResultEditUser = mysqli_query($conn, $query);
-	#$newUser = AddUser($conn, $_POST['vorname'], $_POST['nachname'], $hashedPW,
-	#$_POST['strasse'], $_POST['hausnummer'], $_POST['stadt'], $_POST['plz'], $_POST['benutzername']);
+
 	if ($ResultEditUser){
 		$_SESSION["eingeloggt"] = $_POST['benutzername'];
 	}else{
@@ -128,54 +168,7 @@ if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kenn
 		echo date("Y-M-d G:i:s", time()) . " : [session.editUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
 		echo "Benutzer editieren fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
 		}
+	}else{
+		echo "Benutzer editieren fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
+	}
 }
-
-
-/* if(isset($_POST['benutzername']))
-{
-    if( $_POST['benutzername'] == "admin" && $_POST['kennwort'] == "admin")
-    {
-        $_SESSION["eingeloggt"] = $_POST['benutzername'];
-    }
-}
- */
-
-
-/* logs out when visiting index
- * if(!isset($_SESSION["eingeloggt"]))
-{
-    header('Location: ./index.php');
-    exit;
-} */
-                
-        
-/*if (! session_id()) session_start(); 
-
-if (!isset($_SESSION['eingeloggt']) || $_SESSION['eingeloggt'] != true)
-{
-    header('Location: ./index.php');
-    exit;
-}
-else 
-{
-    if (isset($_POST['benutzername']) AND isset($_POST['kennwort'] ))
-    {
-        // Kontrolle, ob Benutzername und Kennwort vorhanden
-        // diese werden i.d.R. aus Datenbank ausgelesen
-        if ( 
-             $_POST['benutzername'] == "admin" 
-             AND 
-             $_POST['kennwort'] == "admin"
-           )
-        {
-            $_SESSION['benutzername'] = $_POST['benutzername'];
-            $_SESSION['eingeloggt'] = true;
-            echo "<b>einloggen erfolgreich</b>";
-        }
-        else
-        {
-            echo "<b>ung?ltige Eingabe</b>";
-            $_SESSION['eingeloggt'] = false;
-        }
-    }
-}*/

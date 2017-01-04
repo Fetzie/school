@@ -17,69 +17,87 @@
         
         if(isset($_POST['senden']))
         {
-            $rubrik = $_POST["rubrik"];
-            $titel = $_POST["titel"];
-            $text = $_POST["text"];
-            $priceFromSeller = $_POST["priceFromSeller"];
-            $days = $_POST["days"];
+        	$matchRubrik = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["rubrik"]);
+        	$matchTitle = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["titel"]);
+        	$matchText = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["text"]);
+        	$matchPriceFromSeller = regexMatch("/[0-9]{1-99}/", $_POST["priceFromSeller"]);
+        	$matchDays = regexMatch("/(3|6|9)[0]/", $_POST["days"]);
+        	
+        	if($matchRubrik = $matchTitle = $matchText = $matchPriceFromSeller = $matchDays == 1){
+           		$rubrik = $_POST["rubrik"];
+            	$titel = $_POST["titel"];
+            	$text = $_POST["text"];
+            	$priceFromSeller = $_POST["priceFromSeller"];
+            	$days = $_POST["days"];
             
-            list ($price, $timeToDeath) = priceCalc($days, $priceFromSeller);
-            		                                 
-            $sql = "INSERT INTO annoncen (birthdate, rubrik, titel, text, priceFromSeller, days, price, timeToDeath)
-                    VALUES (NOW(), '$rubrik', '$titel', '$text', '$priceFromSeller', '$days', '$price', '$timeToDeath')";
+            	list ($price, $timeToDeath) = priceCalc($days, $priceFromSeller);
+		                                 
+           		$sql = "INSERT INTO annoncen (birthdate, rubrik, titel, text, priceFromSeller, days, price, timeToDeath)
+                	    VALUES (NOW(), '$rubrik', '$titel', '$text', '$priceFromSeller', '$days', '$price', '$timeToDeath')";
 
-            if (mysqli_query($conn, $sql)) 
-            {
-                echo "Neuen Eintrag erfolgreich gespeichert";
-            } 
-            else 
-            {
-                echo "Fehler: " . $sql . "<br>" . mysqli_error($conn);
-            }
+            	if (mysqli_query($conn, $sql)) 
+            	{
+	                echo "Neuen Eintrag erfolgreich gespeichert";
+    	        } 
+        	    else 
+            	{
+              	  echo "Fehler: " . $sql . "<br>" . mysqli_error($conn);
+            	}
             
-            if(!$_FILES["fileToUpload"]["size"]==0)
-            {    
-                pix();
-            }
+           		if(!$_FILES["fileToUpload"]["size"]==0)
+            	{    
+                	pix();
+            	}
+        	}
         }
-        
                  
         elseif(isset($_POST["speichern"]))
         {
-            $annoncenID = $_POST["annoncenID"];
-            $rubrik = $_POST["rubrik"];
-            $titel = $_POST["titel"];
-            $text = $_POST["text"];
-            $priceFromSeller = $_POST["priceFromSeller"];
+        	$matchRubrik = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["rubrik"]);
+        	$matchTitle = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["titel"]);
+        	$matchText = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["text"]);
+        	$matchPriceFromSeller = regexMatch("/[0-9]{1-99}/", $_POST["priceFromSeller"]);
+        	$matchDays = regexMatch("/(3|6|9)[0]/", $_POST["days"]);
+        	 
+        	if($matchRubrik = $matchTitle = $matchText = $matchPriceFromSeller = $matchDays == 1){
+            	$annoncenID = $_POST["annoncenID"];
+            	$rubrik = $_POST["rubrik"];
+            	$titel = $_POST["titel"];
+            	$text = $_POST["text"];
+            	$priceFromSeller = $_POST["priceFromSeller"];
             
             
-            $sql = "UPDATE annoncen SET rubrik='$rubrik', titel='$titel', text='$text', priceFromSeller='$priceFromSeller' WHERE annoncenID=$annoncenID";
+            	$sql = "UPDATE annoncen SET rubrik='$rubrik', titel='$titel', text='$text', priceFromSeller='$priceFromSeller' WHERE annoncenID=$annoncenID";
               
-            if (mysqli_query($conn, $sql)) 
-            {
-                echo "Eintrag erfolgreich ge&auml;ndert";
-            }
-            else
-            {
-                echo "Fehler bei &Auml;nderung: " . $conn->error;
-            }
-        }
+            	if (mysqli_query($conn, $sql)) 
+            	{
+            	    echo "Eintrag erfolgreich ge&auml;ndert";
+            	}
+           		else
+            	{
+               		echo "Fehler bei &Auml;nderung: " . $conn->error;
+            	}
+        	}
+        }	
         elseif(isset($_POST["entfernen"]))
-        {
-            $annoncenID = $_POST["annoncenID"];
+        	{
+        	
+           		$annoncenID = $_POST["annoncenID"];
  
-            $sql = "DELETE FROM annoncen WHERE annoncenID=$annoncenID";
+            	$sql = "DELETE FROM annoncen WHERE annoncenID=$annoncenID";
 
-            if (mysqli_query($conn, $sql))
-            {
-                echo "Eintrag erfolgreich gel&ouml;scht";
-            }
-            else
-            {
-                echo "Fehler beim l&ouml;schen: " . mysqli_error($conn);
-            }
+            	if (mysqli_query($conn, $sql))
+            	{
+                	echo "Eintrag erfolgreich gel&ouml;scht";
+            	}
+            	else
+            	{
+                	echo "Fehler beim l&ouml;schen: " . mysqli_error($conn);
+            	}
+        
+        	}
+    
         }
-    }
     
     function pix()
     {      
