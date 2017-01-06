@@ -21,7 +21,7 @@ function pictureUpload()
                 (
                         $_FILES["fileToUpload"]["tmp_name"][$i] ,
                         "Pictures/" . $_FILES["fileToUpload"]["name"][$i]
-                )
+                );
 
                 $pictureName = $_FILES['fileToUpload']['name'][$i];
                 
