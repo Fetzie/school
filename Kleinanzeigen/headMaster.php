@@ -41,9 +41,11 @@ echo '<!DOCTYPE html>'
           . "<form name='signin' action='./annoncen_erstellen.php' method='POST' >"
            . "<label>E-Mail Adresse:</label>"
            . "<input type='text' class='form-control' name='benutzername' value='' />"
-           . "<label>Kennwort:</label>"
-           . "<input type='password' class='form-control' name='kennwort' value='' />"
-           . "<label>Vorname:</label>"
+           . "<label>Ihr Passwort muss aus mindestens 1 Groﬂbuchstabe, 1 Kleinbuchstabe, 1 Zahl/Sonderzeichen bestehen und mindestens 8 Zeichen lang sein"		
+           . "<input type='password' class='form-control' name='kennwort' value='' pattern='(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$' required/>"
+           . "<label>Kennwort wiederholen:</label>"
+           . "<input type='password' class='form-control' name='kennwortRepeat' value=''  pattern='(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$' required/>"	
+           . "<label>Vorname: </label>"
            . "<input type='text' class='form-control' name='vorname' value='' />"
            . "<label>Nachname:</label>"
            . "<input type='text' class='form-control' name='nachname' value='' />"
@@ -55,9 +57,10 @@ echo '<!DOCTYPE html>'
            . "<input type='text' class='form-control' name='plz' value='' />"
            . "<label>Stadt:</label>"
            . "<input type='text' class='form-control' name='stadt' value='' />"
+           . "<input type='hidden' class='form-control' name='controlmethod' value='createUser' />"		
         . '</div>'
         . '<div class="modal-footer">'
-          . '<input type="Submit" value="einrichten" name="button" class="btn btn-default" />'
+          . '<input type="Submit" value="einrichten" name="buttonCreate" class="btn btn-default" />'
           . '</form>'
           . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
         . '</div>'
@@ -80,12 +83,13 @@ echo '<!DOCTYPE html>'
         . '<div class="modal-body">'
            . "<form name='loggin' action='./annoncen_erstellen.php' method='POST' >"
            . "<label>E-Mail Adresse:</label>"
-           . "<input type='text' class='form-control' name='benutzername' value='' />"
+           . "<input type='email' class='form-control' name='benutzername' value='' />"
            . "<label>Kennwort:</label>"
            . "<input type='password' class='form-control' name='kennwort' value='' />"
+           . "<input type='hidden' class='form-control' name='controlmethod' value='logonUser' />"
         . '</div>'
         . '<div class="modal-footer">'
-          . '<input type="Submit" value="einloggen" name="button" class="btn btn-default" />'
+          . '<input type="Submit" value="einloggen" name="buttonLogon" class="btn btn-default" />'
           . '</form>'
           . '<button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>'
         . '</div>'

@@ -2,7 +2,7 @@
     include ("session.php");
     $titel = "Rubrik";
     include ("headMasterLogin.php");
-    include ("dbMaster.php");
+    #include ("dbMaster.php");
 		
                     
     // benötigt Tabelle für Annonce und Bilder
