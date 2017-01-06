@@ -11,7 +11,7 @@
     $rubrik = $titel = $text = $picture = $birthdate = $timeToDeath = $priceFromSeller = $days = $display = "";
                 
     $titelErr = $textErr = $pictureErr = $birthdateErr = $priceFromSellerErr = "";
-        
+    $deleteAnnoncen = "";
         
     if ($_SERVER["REQUEST_METHOD"] == "POST")
     {
