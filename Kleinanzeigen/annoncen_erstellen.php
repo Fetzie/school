@@ -66,11 +66,20 @@
         {
             $annoncenID = $_POST["annoncenID"];
  
-            $sql = "DELETE FROM pictures WHERE annoncenID=$annoncenID; DELETE FROM annoncen WHERE annoncenID=$annoncenID;";
+            $deletePictures = "DELETE FROM pictures WHERE annoncenID=$annoncenID";
+            $deleteAnnoncen = "DELETE FROM annoncen WHERE annoncenID=$annoncenID";
 
-            if (mysqli_query($conn, $sql))
+            if (mysqli_query($conn, $deletePictures))
             {
-                echo "Eintrag erfolgreich gel&ouml;scht";
+                echo "Bilder von Eintrag Nummer $annoncenID erfolgreich gel&ouml;scht<br>";
+            }
+            else
+            {
+                echo "Fehler beim l&ouml;schen: " . mysqli_error($conn);
+            }
+            if (mysqli_query($conn, $deleteAnnoncen))
+            {
+                echo "Eintrag Nummer $annoncenID erfolgreich gel&ouml;scht<br>";
             }
             else
             {
