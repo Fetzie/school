@@ -1,6 +1,6 @@
 <?php
 include("../handler/accountHandler.php");
-include("./dbMaster.php");
+include("dbMaster.php");
 session_start();
 
 function regexMatch($pattern, $subject){
