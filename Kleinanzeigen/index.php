@@ -65,53 +65,25 @@ else
     $sql = "SELECT annoncenID, rubrik.rubrik, titel, text, priceFromSeller, birthdate, timeToDeath, price, days, visitors, display FROM annoncen LEFT JOIN rubrik ON annoncen.rubrik = rubrik.rubrikID";
     $result = mysqli_query($conn, $sql);
 
-
     while($row = mysqli_fetch_assoc($result)) 
     {
         $annoncenID = $row["annoncenID"];
-        if($row["timeToDeath"] >= $row["birthdate"] && $row["display"] == 0)
+        
+        $date1 = date_create(date('Y-m-d'));
+        $date2 = date_create($row["timeToDeath"]);
+        $diff  = date_diff($date1,$date2);
+        
+        if($diff->format("%R%a Tage") > 0 )
         {
-            $display = 1;
-            $sqlAnswer = "UPDATE annoncen SET display='$display' WHERE annoncenID='$annoncenID'";
-            mysqli_query($conn, $sqlAnswer);
-
-            echo "<a href='annoncen_anzeigen.php?annonce=" . $row["annoncenID"] . "'><div style='width:66%; border-style: outset;'>" . $row["rubrik"] . "<br>"
-               . $row["titel"] . "<br>"
-               . $row["priceFromSeller"] . "</div></a>";
-        }
-        elseif($row["timeToDeath"] < $row["birthdate"] && $row["display"] == 1)
-        {
-            $display = 0;
-            $sqlAnswer = "UPDATE annoncen SET display='$display' WHERE annoncenID='$annoncenID'";
-            mysqli_query($conn, $sqlAnswer);
-        }
-        elseif($row["display"] == 0 && $row["days"] > 20 )
-        {
-            $display = 1;
-            $sqlAnswer = "UPDATE annoncen SET display='$display' WHERE annoncenID='$annoncenID'";
-            mysqli_query($conn, $sqlAnswer);
-            
-            echo "<a href='annoncen_anzeigen.php?annonce=" . $row["annoncenID"] . "'><div style='width:66%; border-style: outset;'>" . $row["rubrik"] . "<br>"
-               . $row["titel"] . "<br>"
-               . $row["priceFromSeller"] . "</div></a>";
-        }
-        elseif($row["display"] == 1)
-        {
-            if($row["days"] == 1)
-            {
-                $days = $row["birthdate"];
-                $priceFromSeller = $row['priceFromSeller'];
-                $price = $row["price"];
-                $sqlAnswer = "SELECT annoncenID, @tage := DAY(NOW()) - DAY(annoncen.birthdate), @kosten := priceFromSeller * price, @endpricevar := @tage * @kosten, endprice FROM annoncen;
-                              UPDATE annoncen SET endprice=@endpricevar WHERE annoncenID=$annoncenID;";
-            }
-            echo "<a href='annoncen_anzeigen.php?annonce=" . $row["annoncenID"] . "'><div class='col-sm-12 well' style='width:66%; border-style: outset;'>"
-               . "<div class='col-sm-6'>" 
+           echo "<a href='annoncen_anzeigen.php?annonce=" . $row["annoncenID"] . "'>"
+              . "<div class='col-sm-12 well' style='width:66%; border-style: outset;'>"
+              . "<div class='col-sm-6'>" 
                     . $row["rubrik"] . "<br>"
                     . $row["titel"] . "<br>"
                     . $row["priceFromSeller"] 
-               . "</div>"   
-               . "</div></a>";
+              . "</div>"   
+              . "</div>"
+              . "</a>";
         }
     }
 
