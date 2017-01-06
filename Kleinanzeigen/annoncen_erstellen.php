@@ -97,30 +97,31 @@
         {
             var eingabe = document.getElementById("newPictureBox");
             var list = document.getElementById("inputPosition");
-            var inhalt = list.innerHTML + "<input type='file' name='fileToUpload[]'/><br>";
+            var inhalt = list.innerHTML + "<input type='file' class='btn btn-default' name='fileToUpload[]'/><br>";
             list.innerHTML = inhalt;
         }
     </script>
 <?PHP
 
     echo "<form name='newEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' enctype='multipart/form-data'>"
-       . "Rubrik:<br>"
-       . "<select name='rubrik'>";
+       . "<fieldset><label>Rubrik:</label>"
+       . "<select class='form-control' name='rubrik'>";
           rubrik();
-    echo "</select><br>"
-       . "Titel:<br><input type='text' name='titel'><br>"
-       . "Bilder:<br><input type='file' name='fileToUpload[]'><br>"
+    echo "</select></fieldset>"
+       . "<fieldset><label>Titel:</label><input type='text' class='form-control' name='titel' placeholder='Annoncen Titel'/></fieldset>"
+       . "<fieldset><label>Bilder:</label><input type='file' class='btn btn-default' name='fileToUpload[]'/></fieldset>"
        . "<span id='inputPosition'></span>"
-       . "<button type='button' onclick='addPictureBox();'> + </button>"
-       . "<br>"
-       . "Text:<br><textarea name='text'></textarea><br>"
-       . "Preis:<br><input type='text' name='priceFromSeller'>&euro;<br>"
+       . "<button type='button' class='btn btn-default' onclick='addPictureBox();'> + </button>"
+       . "<br><br>"
+       . "<fieldset><label>Text:</label><textarea class='form-control' rows='5' name='text' placeholder='Beschreibung des Fahrzeugs'></textarea></fieldset>"
+       . "<fieldset><label>Preis:</label><input type='text' class='form-control' name='priceFromSeller' placeholder='&euro;'/></fieldset>"
        . "<input type='radio' name='days' value='30' checked> 30 Tage<br>"
        . "<input type='radio' name='days' value='60'> 60 Tage<br>"
        . "<input type='radio' name='days' value='90'> 90 Tage<br>"
-       . "<input type='submit' value='senden' name='senden'><input type='reset' value='zurÃ¼cksetzen'>"
+       . "<input type='submit' class='btn btn-default col-sm-6' value='Anzeige erstellen' name='senden'/>"
+            . "<input type='reset' class='btn btn-default col-sm-6' value='zur&uuml;cksetzen'>"
        . "</form>"
-       . "<hr/>";
+       . "<br><hr>";
     
     
     function ausgabe()
@@ -129,24 +130,33 @@
 
         $sql = "SELECT annoncenID, rubrik.rubrik, titel, text, priceFromSeller, visitors, birthdate, timeToDeath FROM annoncen LEFT JOIN rubrik ON annoncen.rubrik = rubrik.rubrikID";
         $result = mysqli_query($conn, $sql);
-        
+        $annoncenNumber = 1;
         
         while($row = mysqli_fetch_assoc($result)) 
         {
             $date1 = date_create(date('Y-m-d'));
             $date2 = date_create($row["timeToDeath"]);
             $diff  = date_diff($date1,$date2);
-
+            
+            
             echo "<form name='geaenderterEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "'>"
+               . "<tr>"
                . "<input type='hidden' name='annoncenID' value='" . $row["annoncenID"] . "'>"
-               . "Rubrik: " . $row["rubrik"] . " | "
-               . "Titel: " . $row["titel"] . " | "
-               . "Text: " . $row["text"] . " | "
-               . "Preis: " . $row["priceFromSeller"] . " | "
-               . "Verf&uuml;gbarkeit: " . $diff->format("%R%a Tage") . " | "
-               . "Besucher: " . $row["visitors"] . "&nbsp;"
-               . "<a href='annoncen_bearbeitung.php?annonce=" . $row["annoncenID"] . "'><button type='button' >bearbeiten</button></a><br>"
+               . "<td>" . $annoncenNumber . "</td>"
+               . "<td>Rubrik: " . $row["rubrik"] . "</td>"
+               . "<td>Titel: " . $row["titel"] . "</td>"
+               . "<td>Preis: " . $row["priceFromSeller"] . "</td>"
+               . "<td>Verf&uuml;gbarkeit: " . $diff->format("%R%a Tage") . "</td>"
+               . "<td>Besucher: " . $row["visitors"] . "</td>" . "&nbsp;"
+               . "<td>"
+                    . "<a href='annoncen_bearbeitung.php?annonce=" . $row["annoncenID"] . "'>"
+                    . "<span class='btn btn-default glyphicon glyphicon-pencil'></span>"
+                    . "</a>"
+               . "</td>"
+               . "</tr>"
+                    
                . "</form>";
+            $annoncenNumber++;
         }
 
         mysqli_close($conn);   
