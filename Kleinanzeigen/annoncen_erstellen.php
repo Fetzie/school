@@ -88,7 +88,7 @@
         {
             var eingabe = document.getElementById("newPictureBox");
             var list = document.getElementById("inputPosition");
-            var inhalt = list.innerHTML + "<input type='file' name='pictures[]'/><br>";
+            var inhalt = list.innerHTML + "<input type='file' name='fileToUpload[]'/><br>";
             list.innerHTML = inhalt;
         }
     </script>
