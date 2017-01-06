@@ -7,6 +7,7 @@ include ("dbMaster.php");
 $annonce = $_GET["annonce"];
 
 $sql = "SELECT annoncen.annoncenID, rubrik.rubrik, annoncen.titel, annoncen.text, annoncen.priceFromSeller, annoncen.visitors FROM annoncen LEFT JOIN rubrik ON annoncen.rubrik = rubrik.rubrikID WHERE annoncen.annoncenID='$annonce'";
+
 $result = mysqli_query($conn, $sql);
 
 
