@@ -82,6 +82,18 @@
     
     echo "<a href='rubrik.php'>Rubrik erstellen</a>";
     
+?>
+    <script>
+        function addPictureBox()
+        {
+            var eingabe = document.getElementById("newPictureBox");
+            var list = document.getElementById("inputPosition");
+            var inhalt = list.innerHTML + "<input type='file' name='pictures[]'/><br>";
+            list.innerHTML = inhalt;
+        }
+    </script>
+<?PHP
+
     echo "<form name='newEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "' enctype='multipart/form-data'>"
        . "Rubrik:<br>"
        . "<select name='rubrik'>";
@@ -89,15 +101,9 @@
     echo "</select><br>"
        . "Titel:<br><input type='text' name='titel'><br>"
        . "Bilder:<br><input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
-       . "<input type='file' name='fileToUpload[]'><br>"
+       . "<span id='inputPosition'></span>"
+       . "<button type='button' onclick='addPictureBox();'> + </button>"
+       . "<br>"
        . "Text:<br><textarea name='text'></textarea><br>"
        . "Preis:<br><input type='text' name='priceFromSeller'>&euro;<br>"
        . "<input type='radio' name='days' value='30' checked> 30 Tage<br>"
