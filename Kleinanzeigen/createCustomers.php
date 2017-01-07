@@ -21,7 +21,8 @@ $sql = "CREATE TABLE customers (
   houseNumber varchar(55) NOT NULL,
   zipcode varchar(55) NOT NULL,
   city varchar(55) NOT NULL,
-  passcode varchar(50) NOT NULL
+  passcode varchar(50) NOT NULL,
+  advertisementid int(6) UNSIGNED NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -40,8 +41,11 @@ INSERT INTO customers (id, firstname, lastname, emailaddress, address1, houseNum
 --
 ALTER TABLE customers
   ADD PRIMARY KEY (id),
-  ADD UNIQUE KEY emailaddress (emailaddress);
+  ADD UNIQUE KEY emailaddress (emailaddress)
+  ADD FOREIGN KEY (advertisementid) REFERENCES annoncen(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
+		
+ALTER TABLE 'customers' ADD CONSTRAINT 'customer2annonce' FOREIGN KEY ('advertisementid') REFERENCES 'phpclass2'.'annoncen'('annoncenID') ON DELETE CASCADE ON UPDATE CASCADE;
 --
 -- AUTO_INCREMENT for dumped tables
 --
