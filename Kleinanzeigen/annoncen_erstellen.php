@@ -145,7 +145,7 @@
            . "</form>"
            . "<br><hr>";
 
-    
+    echo "<table class='table'>";
     
     function ausgabe()
     {
@@ -189,6 +189,8 @@
                . "</form>";
             $annoncenNumber++;
         }
+	
+	echo "</table>";
 
         mysqli_close($conn);   
     }
