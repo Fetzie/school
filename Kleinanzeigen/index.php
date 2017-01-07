@@ -52,7 +52,8 @@ $_SESSION = array();
        . "</form>"
        . "</div>"
        . "<hr>";
-
+        
+       
 if(isset($_POST["search"]))
 {
     $rubrik = $_POST["rubrik"];
