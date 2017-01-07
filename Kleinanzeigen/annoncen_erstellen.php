@@ -53,13 +53,13 @@
                  
         elseif(isset($_POST["speichern"]))
         {
-        	$matchRubrik = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["rubrik"]);
-        	$matchTitle = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["titel"]);
-        	$matchText = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["text"]);
-        	$matchPriceFromSeller = regexMatch("/[0-9]{1-99}/", $_POST["priceFromSeller"]);
-        	$matchDays = regexMatch("/(3|6|9)[0]/", $_POST["days"]);
+        	#$matchRubrik = regexMatch("/(^[A-Z]{1})([a-z]+)/", $_POST["rubrik"]);
+        	$matchTitle = regexMatch("/[A-Za-z]+[ ]*/", $_POST["titel"]);
+        	$matchText = regexMatch("/[A-Za-z]+[\ \,\.\(\)\/]*[0-9]*/", $_POST["text"]);
+        	$matchPriceFromSeller = regexMatch("/[0-9]*/", $_POST["priceFromSeller"]);
+        	#$matchDays = regexMatch("/(3|6|9)[0]/", $_POST["days"]);
         	 
-        	if($matchRubrik = $matchTitle = $matchText = $matchPriceFromSeller = $matchDays == 1){
+        	if($matchTitle = $matchText = $matchPriceFromSeller == 1){
             	$annoncenID = $_POST["annoncenID"];
             	$rubrik = $_POST["rubrik"];
             	$titel = $_POST["titel"];
