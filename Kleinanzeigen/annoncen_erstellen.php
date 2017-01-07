@@ -161,9 +161,17 @@
             $diff  = date_diff($date1,$date2);
             
             
-            echo "<form name='geaenderterEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "'>"
-               . "<tr>"
-               . "<input type='hidden' name='annoncenID' value='" . $row["annoncenID"] . "'>"
+            echo "<form name='geaenderterEintrag' method='post' action='" . htmlspecialchars($_SERVER["PHP_SELF"]) . "'>";
+        
+            if($diff->format("%R%a Tage") > 0 )
+            {
+                echo "<tr>";
+            }
+            else
+            {
+                echo "<tr style='background-color:red;'>";
+            }
+            echo "<input type='hidden' name='annoncenID' value='" . $row["annoncenID"] . "'>"
                . "<td>" . $annoncenNumber . "</td>"
                . "<td>Rubrik: " . $row["rubrik"] . "</td>"
                . "<td>Titel: " . $row["titel"] . "</td>"
@@ -185,6 +193,7 @@
     }
 
     ausgabe();
+    echo "</table>";
     
     include("foodMaster.php");
 ?>
