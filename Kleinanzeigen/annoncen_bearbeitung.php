@@ -18,7 +18,9 @@
             else {echo "<option value='" . $row["rubrikID"] . "'>" . $row["rubrik"] . "</option>";}
         }
     }
-
+    
+    echo "<a href='./annoncen_erstellen.php'><button type='button' class='btn btn-default'>Zur&uuml;ck</button></a>";
+    echo "<hr>";
 
     $annonce= "";
     
