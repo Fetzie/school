@@ -126,14 +126,10 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 				 */
 				var_dump(http_response_code (401));
 				header("Location: ./index.php"); /* Redirect browser */
-
-				
-
-				
-					/* echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] db connection failed " . "</br>" . PHP_EOL;
-					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
-					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL; */
-					exit();
+				/* echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] db connection failed " . "</br>" . PHP_EOL;
+				echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
+				echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL; */
+				exit();
 				}
 	}else{
 		header("Location: ./index.php"); /* Redirect browser */
