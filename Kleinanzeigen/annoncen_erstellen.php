@@ -139,6 +139,7 @@
            . "<input type='radio' name='days' value='30' checked> 30 Tage<br>"
            . "<input type='radio' name='days' value='60'> 60 Tage<br>"
            . "<input type='radio' name='days' value='90'> 90 Tage<br>"
+           . "<input type='hidden' name='controlmethod' value='createannonce' />" 			
            . "<input type='submit' class='btn btn-default col-sm-6' value='Anzeige erstellen' name='senden'/>"
                 . "<input type='reset' class='btn btn-default col-sm-6' value='zur&uuml;cksetzen'>"
            . "</form>"
@@ -184,7 +185,7 @@
                     . "</a>"
                . "</td>"
                . "</tr>"
-                    
+               . "<input type='hidden' name='controlmethod' value='editannonce' />"     
                . "</form>";
             $annoncenNumber++;
         }
