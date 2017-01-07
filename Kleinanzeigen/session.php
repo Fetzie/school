@@ -119,12 +119,16 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 			{
 				$_SESSION["eingeloggt"] = $_POST['benutzername'];
 			}else{
+				header("Location: ./index.php"); /* Redirect browser */
+				exit();
 					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] db connection failed " . "</br>" . PHP_EOL;
 					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
 					echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Error: " . mysqli_error($conn) . "</br>" . PHP_EOL;
 					echo "Benutzer einloggen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
 				}
 	}else{
+		header("Location: ./index.php"); /* Redirect browser */
+		exit();
 		echo "Benutzer einloggen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
 	}
 }
