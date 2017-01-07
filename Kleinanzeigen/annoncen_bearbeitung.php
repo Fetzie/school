@@ -46,7 +46,6 @@
                . "<label>Titel:</label><input type='text' class='form-control' name='titel' value='" . $row["titel"] . "'>"
                . "<label>Text:</label><input type='text' class='form-control' name='text' value='" . $row["text"] . "'>"
                . "<label>Preis:</label><input type='text' class='form-control' name='priceFromSeller' value='" . $row["priceFromSeller"] . "'><br>"
-               . "<input type='button' name='annoncenID' value='" . $row["timeToDeath"] . "'>"
                . "<input type='submit' class='btn btn-default col-sm-6' name='speichern' value='speichern'><input type='submit' class='btn btn-default col-sm-6' name='entfernen' value='l&ouml;schen'>"
                . "</form>"
                . "<br><br><hr><br>"
