@@ -185,13 +185,13 @@ if ($_POST["controlmethod"] == "editUser" && ($_POST['kennwort'] == $_POST['kenn
 	}
 }
 
-if ($_POST["controlmethod"] == "deleteUser" && isset($_SESSION["eingeloggt"])){
+/* if ($_POST["controlmethod"] == "deleteUser" && isset($_SESSION["eingeloggt"])){
 	
 	$deleteStatement = "DELETE from customers where emailaddress='" . $_POST["emailaddress"] . "';";
 	$query = mysqli_query($conn, $deleteStatement);
 	if($query){
-		header("Location: ./index.php"); /* Redirect browser */
+		header("Location: ./index.php"); // Redirect browser 
 	}else{
 		echo "Benutzer löschen fehlgeschlagen, bitte kontaktieren Sie den Administrator unter admin@example.com";
 	}
-}
+} */

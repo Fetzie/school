@@ -33,7 +33,7 @@ echo '<!DOCTYPE html>'
     . '</div>';
         
     echo '<ul class="nav navbar-nav navbar-right">'
-    		. '<li><a data-toggle="modal" data-target="#delUser"><span class="glyphicon glyphicon-user"></span> Benutzer entfernen</a></li>'
+    		. '<!-- NYI <li><a data-toggle="modal" data-target="#delUser"><span class="glyphicon glyphicon-user"></span> Benutzer entfernen</a></li> -->'
             . '<li><a data-toggle="modal" data-target="#userdata"><span class="glyphicon glyphicon-user"></span> Benutzerdaten</a></li>'
             . '<li><a data-toggle="modal" data-target="#logout"><span class="glyphicon glyphicon-log-out"></span> Abmelden</a></li>'
            . '</ul>'
@@ -41,7 +41,7 @@ echo '<!DOCTYPE html>'
         . '</nav>'
         
         . '<div class="container">'
-        		
+/*         	. '<!-- NYI '	
         	. '<!-- User Delete Modal start  -->'
             . '<div class="modal fade" id="delUser" role="dialog">'
             . '<div class="modal-dialog">'
@@ -71,7 +71,7 @@ echo '<!DOCTYPE html>'
             . '</div>'
             . '</div>'
             . '<!-- User Delete Modal ende -->'	
-        		
+        	. '-->'	 */
         		
         		
         		
