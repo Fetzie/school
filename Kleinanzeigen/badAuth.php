@@ -28,8 +28,13 @@ echo '<!DOCTYPE html>'
         . '</ul>'
     . '</div>'
     . '</nav>';
+    echo '<script>
+    		function backToIndex(){
+    		window.location.href="./index.php"
+			}
+    	 </script>"';
+    echo '<body><center><p> Sie haben entweder ein ungueltiges Passwort oder Benutzername eingegeben. Bitte klicken Sie auf dem nachfolgenden Button um sich erneut anzumelden.</p>
+    		<button type="button" name="backToIndex" class="glyphicon glyphicon-home" onclick="backToIndex()" ></center></body></html>';
     
-    echo '<body><p> Sie haben entweder ein ungueltiges Passwort oder Benutzername eingegeben. Bitte klicken Sie auf dem nachfolgenden Button um sich erneut anzumelden.</p>
-    		<p><a href="./index.php"><img border="1" alt="SellMyCar" src="./Pictures/back.png" width="100" height="100"></a></p></body></html>';
     
     
