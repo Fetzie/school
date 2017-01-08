@@ -125,7 +125,7 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 				 * Maybe make a landing page that automatically redirects to ./index after x seconds
 				 */
 				#var_dump(http_response_code (401));
-				header("Location: ./index.php"); /* Redirect browser */
+				header("Location: ./badAuth.php"); /* Redirect browser */
 				#echo "login failed";
 				/* echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] db connection failed " . "</br>" . PHP_EOL;
 				echo date("Y-M-d G:i:s", time()) . " : [session.logonUser] Debugging Err.No: " . mysqli_errno($conn) . "</br>" . PHP_EOL;
@@ -133,9 +133,7 @@ if ($_POST["controlmethod"] == "logonUser" && !isset($_SESSION["eingeloggt"])){
 				exit();
 				}
 	}else{
-		header("Location: ./index.php"); /* Redirect browser */
-		$message = "Benutzer einloggen fehlgeschlagen, bitte überprüfen sie die Eingabe und danach erneut versuchen";
-		echo "<script type='text/javascript'>alert('$message');</script>";
+		header("Location: ./badAuth.php"); /* Redirect browser */
 		exit();
 
 	}
