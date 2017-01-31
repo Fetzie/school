@@ -18,8 +18,9 @@
             else {echo "<option value='" . $row["rubrikID"] . "'>" . $row["rubrik"] . "</option>";}
         }
     }
-
-
+    
+    echo "<a href='./annoncen_erstellen.php'><button type='button' class='btn btn-default'>Zur&uuml;ck</button></a>";
+    echo "<hr>";
     $annonce= "";
     
     function bearbeitung($ID)
@@ -28,23 +29,43 @@
         
         $annonce = $_GET["annonce"];
         
-        $sql = "SELECT annoncenID, rubrik.rubrik, rubrik.rubrikID, titel, text, priceFromSeller FROM annoncen LEFT JOIN rubrik ON annoncen.rubrik = rubrik.rubrikID WHERE annoncenID='$annonce'";
+        $sql = "SELECT annoncenID, rubrik.rubrik, rubrik.rubrikID, titel, text, priceFromSeller, timeToDeath FROM annoncen LEFT JOIN rubrik ON annoncen.rubrik = rubrik.rubrikID WHERE annoncenID='$annonce'";
         $result = mysqli_query($conn, $sql);
 
         while($row = mysqli_fetch_assoc($result)) 
         {
+            $date1 = date_create(date('Y-m-d'));
+            $date2 = date_create($row["timeToDeath"]);
+            $diff  = date_diff($date1,$date2);
+            
             echo "<form name='geaenderterEintrag' method='post' action='annoncen_erstellen.php'>"
-               . "Rubrik: <select name='rubrik'>";
+               . "<label>Rubrik:</label><select class='form-control' name='rubrik'>";
                  rubrik($row["rubrikID"]);
             echo "</select>"        
                . "<input type='hidden' name='annoncenID' value='" . $row["annoncenID"] . "'>"
-               . "Titel: <input type='text' name='titel' value='" . $row["titel"] . "'>"
-               . "Text: <input type='text' name='text' value='" . $row["text"] . "'>"
-               . "Preis: <input type='text' name='priceFromSeller' value='" . $row["priceFromSeller"] . "'>"
-               . "<input type='submit' name='speichern' value='speichern'><input type='submit' name='entfernen' value='l&ouml;schen'>"
+               . "<label>Titel:</label><input type='text' class='form-control' name='titel' value='" . $row["titel"] . "'>"
+               . "<label>Text:</label><input type='text' class='form-control' name='text' value='" . $row["text"] . "'>"
+               . "<input type='hidden' name='controlmethod' value='editannonce' />"
+               . "<label>Preis:</label><input type='text' class='form-control' name='priceFromSeller' value='" . $row["priceFromSeller"] . "'><br>"
+               . "<input type='submit' class='btn btn-default col-sm-6' name='speichern' value='speichern'><input type='submit' class='btn btn-default col-sm-6' name='entfernen' value='l&ouml;schen'>"
                . "</form>"
-               . "<button type='button' onclick='addDays($ID)'>+30 Tage</button>";
+               . "<br><br><hr><br>"
+               . "<label>Ablaufdatum der Annonce:</label><p class='well' style='text-align:center; font-size:50px;'>"; 
+                
+            
+            if($diff->format("%R%a Tage") > 0 )
+            {
+                $date = date_create($row["timeToDeath"]);
+                echo date_format($date, 'd.m.Y');
+            }
+            else
+            {
+                echo "Annonce ist bereits abgelaufen";
+            }
+            $timeToDeath = $row["timeToDeath"];
+            echo "</p>";
         }
+    
 
         mysqli_close($conn);   
     }

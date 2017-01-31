@@ -42,8 +42,10 @@ function pictureUpload()
             }
             else
             {
-                echo "<p>Error! Datei ist größer als 20KB oder nicht im Format JPEG oder PNG!</p>";
+
+                echo "<p>Error! Datei ist grÃ¶ÃŸer als 20KB oder nicht im Format JPEG oder PNG!</p>";
             }
         }
     }
 }
+

@@ -1,0 +1,7 @@
+Oct 19 11:30:01 knoppi CRON[3898]: (pam_unix) session opened for user root
+Oct 19 11:30:01 knoppi CRON[3899]: (pam_unix) session opened for user root
+Oct 19 11:31:04 knoppi CRON[3898]: (pam_unix) session closed for user root
+Oct 19 11:31:04 knoppi CRON[3899]: (pam_unix) session closed for user root
+Dec 7 10:44:19 knoppi login[3340]: (pam_unix) ROOT LOGIN on tty1
+Dec 8 10:53:04 knoppi login[3340]: (pam_unix) session closed for user root
+Apr 17 00:44:58 knoppi login[3332]: (pam_unix) session opened for user cschmidt by LOGIN
